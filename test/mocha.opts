@@ -1,0 +1,6 @@
+--reporter spec
+--recursive
+--require test/spec-helper.coffee
+--compilers coffee:coffee-script
+--timeout 30000
+--slow 10000
