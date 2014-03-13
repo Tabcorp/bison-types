@@ -49,8 +49,8 @@ describe 'GetParameterFromType', ->
   it 'should correctly get an integer parameter', ->
     typeHelper.getParameterFromType(parameter: '4').should.equal 4
 
-  it 'should floor a fixed point parameter', ->
-    typeHelper.getParameterFromType(parameter: '5.6').should.equal 5
+  it 'should get a fixed point parameter', ->
+    typeHelper.getParameterFromType(parameter: '5.6').should.equal 5.6
 
   it 'should correctly get a previously resolved integer value', ->
     typeHelper.getParameterFromType(parameter: 'a', {a: 6}).should.equal 6
