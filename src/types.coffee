@@ -31,7 +31,7 @@ module.exports =
     _read : -> @buffer.getInt64()
     _write: (val) -> @buffer.writeInt64(val)
 
-  'ascii' :
+  'utf-8' :
     _read : (length) -> @buffer.getString length
     _write: (val) -> @buffer.writeString val
 
