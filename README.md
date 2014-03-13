@@ -1,6 +1,6 @@
 # bison-types
 
-![logo](https://raw.github.com/TabDigital/bison-types/master/bison-types.png)
+![logo](bison-types.png)
 
 Are you stuck with integrating with a system that only speaks binary?
 
