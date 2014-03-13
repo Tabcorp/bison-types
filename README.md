@@ -2,22 +2,63 @@
 
 ![logo](bison-types.png)
 
-Are you stuck with integrating with a system that only speaks binary?
+- Are you stuck with integrating with a system that only speaks binary?
+- Are you sick of manually decoding and encoding from json to binary?
+- Do you want an easy way to define your types in javascript?
 
-Are you sick of manually decoding and encoding from json to binary?
-
-Do you want an easy way to define your types in javascript?
-
-If you answered yes to any of the above questions, then bison-types is for you
+If you answered yes to any of the above questions, then `bison-types` is for you
 
 ## How does it work?
 
-bison-types allows you to define custom types.
-
+`bison-types` allows you to define custom types.
 With these custom types you can build up a message definition
-pass these types and the buffer to bison-types and it will do the rest
+Pass these types and the buffer to bison-types and it will do the rest.
 
-bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) under the hood for all buffer manipulation
+*For example:*
+
+```coffee
+bison = require 'bison-types'
+
+types = 
+
+  # top-level type
+  'timeline':
+    count: 'uint16'
+    messages: 'message[count]'
+
+  # sub type
+  'message':
+    id: 'uint8'
+    timestamp: 'uint16'
+    length: 'uint16'
+    text: 'ascii(length)'
+
+# time to read!
+
+buf = new Buffer [0x04, 0x92, 0x04, 0x3b, 0xf4, 0x2c, ...]
+reader = new bison.Reader buf, types, {bigEndian: false}
+json = reader.read 'timeline'
+
+# or write !
+
+buf = new Buffer(1024)
+writer = new bison.Reader buf, types, {bigEndian: false}
+reader.write 'timeline', {
+  count: 1
+  messages: [
+    {
+      id: 3
+      date: new Date().getTime()
+      length: 11
+      text: 'hello world'
+    }
+  ]
+}
+
+```
+
+*Note:*  bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) under the hood for all buffer manipulation.
+
 
 ## Provided simple types
 
@@ -35,7 +76,7 @@ bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) unde
 
 ## Creating your own custom types
 
-NOTE: All examples are written in coffeescript
+*NOTE:* All examples are written in coffeescript
 
 There are 2 different ways that you can define a custom type
 ### By mapping it to another type
