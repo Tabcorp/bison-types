@@ -1,5 +1,7 @@
 # bison-types
 
+![logo](https://raw.github.com/TabDigital/bison-types/master/bison-types.png)
+
 Are you stuck with integrating with a system that only speaks binary?
 
 Are you sick of manually decoding and encoding from json to binary?
@@ -13,8 +15,7 @@ If you answered yes to any of the above questions, then bison-types is for you
 bison-types allows you to define custom types.
 
 With these custom types you can build up a message definition
-pass these types and the buffer to bison-types and it will do t
-he rest
+pass these types and the buffer to bison-types and it will do the rest
 
 bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) under the hood for all buffer manipulation
 
@@ -29,7 +30,7 @@ bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) unde
 * `int32`  - signed 32 bit integer
 * `int64`  - signed 64 bit integer
 * `ascii`  - utf encoded string
-* 'skip'   - will skip specified bytes
+* `skip`   - will skip specified bytes
 
 
 ## Creating your own custom types
