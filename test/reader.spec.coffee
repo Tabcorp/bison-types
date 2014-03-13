@@ -66,7 +66,7 @@ describe 'Bison Reader', ->
   it 'should read string', ->
     buf =  new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     reader = new Reader buf
-    reader.read('ascii', 5).should.eql 'HELLO'
+    reader.read('utf-8', 5).should.eql 'HELLO'
 
   it 'should be able to define a simple type', ->
     buf = new Buffer [ 0x01 ]
@@ -148,7 +148,7 @@ describe 'Bison Reader', ->
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     types =
       custom:
-        a: 'ascii(5)'
+        a: 'utf-8(5)'
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 'HELLO' }

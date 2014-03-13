@@ -31,7 +31,7 @@ types =
     id: 'uint8'
     timestamp: 'uint16'
     length: 'uint16'
-    text: 'ascii(length)'
+    text: 'utf-8(length)'
 
 # time to read!
 
@@ -54,7 +54,7 @@ json = reader.read 'timeline'
 * `int16`  - signed 16 bit integer
 * `int32`  - signed 32 bit integer
 * `int64`  - signed 64 bit integer
-* `ascii`  - utf encoded string
+* `utf-8`  - utf-8 encoded string
 * `skip`   - will skip specified bytes
 
 
@@ -122,7 +122,7 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     types =
       my-type:
-        a: 'ascii(5)'
+        a: 'utf-8(5)'
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') # myType = { a: 'HELLO' }
