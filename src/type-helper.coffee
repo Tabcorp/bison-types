@@ -51,7 +51,7 @@ exports.isNumber = (number) ->
 
 exports.getParameterFromType = (type, result) ->
   if exports.isNumber type.parameter
-    Math.floor(type.parameter)
+    Number(type.parameter)
   else if result[type.parameter]?
     result[type.parameter]
   else

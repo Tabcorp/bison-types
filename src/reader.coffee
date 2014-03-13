@@ -37,7 +37,7 @@ class Reader
         if type.value.hasOwnProperty '_read'
           type.value._read.apply @, [parameter]
         else if type.isArray
-          _.map [0...parameter], =>
+          _.map [0...Math.floor(parameter)], =>
             @processObject type.value, parameter
         else
           @processObject type.value, parameter
