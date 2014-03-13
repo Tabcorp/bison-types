@@ -39,22 +39,6 @@ buf = new Buffer [0x04, 0x92, 0x04, 0x3b, 0xf4, 0x2c, ...]
 reader = new bison.Reader buf, types, {bigEndian: false}
 json = reader.read 'timeline'
 
-# or write !
-
-buf = new Buffer(1024)
-writer = new bison.Reader buf, types, {bigEndian: false}
-reader.write 'timeline', {
-  count: 1
-  messages: [
-    {
-      id: 3
-      date: new Date().getTime()
-      length: 11
-      text: 'hello world'
-    }
-  ]
-}
-
 ```
 
 *Note:*  bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) under the hood for all buffer manipulation.
