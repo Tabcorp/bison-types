@@ -37,7 +37,7 @@ types =
 
 buf = new Buffer [0x04, 0x92, 0x04, 0x3b, 0xf4, 0x2c, ...]
 reader = new bison.Reader buf, types, {bigEndian: false}
-json = reader.read 'timeline''
+json = reader.read 'timeline'
 
 # or write !
 
