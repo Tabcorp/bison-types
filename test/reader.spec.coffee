@@ -194,3 +194,9 @@ describe 'Bison Reader', ->
         {c:2},
         {c:3}
       ]
+
+  it 'should be able to read an array of type that is defined with _read function', ->
+    buf = new Buffer [ 0x01, 0x02, 0x03 ]
+
+    reader = new Reader buf, {}
+    reader.read('uint8[3]').should.eql [1,2,3]
