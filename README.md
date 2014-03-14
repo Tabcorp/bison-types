@@ -37,7 +37,25 @@ types =
 
 buf = new Buffer [0x04, 0x92, 0x04, 0x3b, 0xf4, 0x2c, ...]
 reader = new bison.Reader buf, types, {bigEndian: false}
-json = reader.read 'timeline'
+json = reader.read 'timeline''
+
+# or write !
+
+buf = new Buffer(1024)
+writer = new bison.Writer buf, types, {bigEndian: false}
+writer.write 'timeline', {
+  count: 1
+  messages: [
+    {
+      id: 3
+      date: new Date().getTime()
+      length: 11
+      text: 'hello world'
+    }
+  ]
+}
+
+
 
 ```
 
@@ -88,10 +106,13 @@ You can call any of it's methods
 ``` coffee
   types = 
     multiply:
-      _read:  (val) ->
-        @buffer.getUint8() * val
+      _read:  (multiplier) ->
+        @buffer.getUint8() * multiplier
+      _write: (val, multiplier) ->
+        @buffer.writeUInt8(val * multiplier)
 ```
-would multiply the value read from the buffer before returning it
+would multiply the value read from the buffer before returning it when reading
+and multiply the value to be written when writing
 
 ## Reader
 
@@ -133,7 +154,7 @@ The power of bison-types is evident as you define more complex types
 ``` coffee
     bison = require 'bison-types'
 
-    buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
+    buf = new Buffer [ 0x01, 0x03, 0x04 ]
     types = 
       my-type:
         a: 'uint8'
@@ -179,6 +200,112 @@ You can specify arrays in a similar matter
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') 
     # myType = { a: 3, b:[{c:1},{c:2},{c:3}] }
+```
+
+## Writer
+
+You need to pass in a buffer to write to, and any custom types that you may have. 
+
+You can also pass in options, look at [smart-buffer](https://github.com/TabDigital/smart-buffer) for a full list of options
+
+### Writing some integers
+``` coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 4
+    types = 
+      my-type:
+        a: 'uint8'
+        b: 'uint8'
+        c: 'uint8'
+        d: 'uint8'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 1,  b: 2, c: 3, d: 4 }
+    # buf will equal [ 0x01, 0x02, 0x03, 0x04 ]
+```
+
+### Writing a string
+``` coffee
+    bison = require 'bison-types'
+    
+    buf = new Buffer 5
+    types =
+      my-type:
+        a: 'utf-8'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 'HELLO' }
+    # buf will equal [0x48, 0x45, 0x4C, 0x4C, 0x4F]
+```
+
+### Only writing a certain length of string
+``` coffee
+    bison = require 'bison-types'
+    
+    buf = new Buffer 10
+    types =
+      my-type:
+        a: 'utf-8(5)'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 'HELLOWORLD' }
+    # buf will equal [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00]
+```
+
+### Complex types
+The power of bison-types is evident as you define more complex types
+``` coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 4
+    types = 
+      my-type:
+        a: 'uint8'
+        b: 'my-other-type'
+      my-other-type:
+        c: 'uint8'
+        d: 'uint8'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 1,  b: { c: 3, d: 4 }}
+    # buf will equal [ 0x01, 0x03, 0x04 ]
+```
+
+### Using other values as parameters
+You can use other values as parameters to types
+The power of bison-types is evident as you define more complex types
+``` coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 2
+    types = 
+      div:
+        _write: (val, divider) -> @buffer.writeUInt8(val/divider)
+      my-type:
+        a: 'uint8'
+        b: 'div(a)'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 4,  b: 8}
+    # buf will equal [ 0x04, 0x02 ]
+```
+### Arrays
+You can specify arrays in a similar matter
+
+``` coffee
+    bison = require 'bison-types'
+    buf = new Buffer 4 
+    types =
+      object:
+        c: 'uint8'
+      my-type:
+        a: 'uint8'
+        b: 'object[a]'
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 3, b:[{c:1},{c:2},{c:3}] }
+    # buf will equal [ 0x03, 0x01, 0x02, 0x03 ]
 ```
 
 ## Testing
