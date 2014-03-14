@@ -42,17 +42,18 @@ exports.getTypeInfo = (typeName, types) ->
   else
     isArray: result[5]?
     isFunction: result[3]?
-    parameter: if result[5]? then result[6] else result[4]
+    parameter: result[4]
+    arraySize: result[6]
     name: result[1]
     value: types[result[1]]
 
 exports.isNumber = (number) ->
   not isNaN number
 
-exports.getParameterFromType = (type, result) ->
-  if exports.isNumber type.parameter
-    Number(type.parameter)
-  else if result[type.parameter]?
-    result[type.parameter]
+exports.getParameterFromResult = (value, result) ->
+  if exports.isNumber value
+    Number(value)
+  else if result[value]?
+    result[value]
   else
-    throw new Error "#{type.parameter} is not a valid parameter"
+    throw new Error "#{value} is not a valid parameter"

@@ -17,6 +17,7 @@ describe 'GetTypeInfo', ->
       name: 'my-type'
       value: 'uint8'
       parameter: '3'
+      arraySize: undefined
 
   it 'should correctly parse a function type with an variable parameter', ->
     type = typeHelper.getTypeInfo 'my-type(another-value)', {'my-type': 'uint8'}
@@ -26,6 +27,7 @@ describe 'GetTypeInfo', ->
       name: 'my-type'
       value: 'uint8'
       parameter: 'another-value'
+      arraySize: undefined
 
   it 'should correctly parse a array type with an integer parameter', ->
     type = typeHelper.getTypeInfo 'my-type[3]', {'my-type': 'uint8'}
@@ -34,7 +36,8 @@ describe 'GetTypeInfo', ->
       isFunction: false
       name: 'my-type'
       value: 'uint8'
-      parameter: '3'
+      parameter: undefined
+      arraySize: '3'
 
   it 'should correctly parse a array type with an variable parameter', ->
     type = typeHelper.getTypeInfo 'my-type[another-value]', {'my-type': 'uint8'}
@@ -43,23 +46,24 @@ describe 'GetTypeInfo', ->
       isFunction: false
       name: 'my-type'
       value: 'uint8'
-      parameter: 'another-value'
+      parameter: undefined
+      arraySize: 'another-value'
 
-describe 'GetParameterFromType', ->
+describe 'GetParameterFromResult', ->
   it 'should correctly get an integer parameter', ->
-    typeHelper.getParameterFromType(parameter: '4').should.equal 4
+    typeHelper.getParameterFromResult('4').should.equal 4
 
   it 'should get a fixed point parameter', ->
-    typeHelper.getParameterFromType(parameter: '5.6').should.equal 5.6
+    typeHelper.getParameterFromResult('5.6').should.equal 5.6
 
   it 'should correctly get a previously resolved integer value', ->
-    typeHelper.getParameterFromType(parameter: 'a', {a: 6}).should.equal 6
+    typeHelper.getParameterFromResult('a', {a: 6}).should.equal 6
 
   it 'should correctly get a previously resolved string value', ->
-    typeHelper.getParameterFromType(parameter: 'a', {a: 'yo'}).should.equal 'yo'
+    typeHelper.getParameterFromResult('a', {a: 'yo'}).should.equal 'yo'
 
   it 'should throw error if the parameter is invalid', ->
-    (-> typeHelper.getParameterFromType(parameter: 'a', {}))
+    (-> typeHelper.getParameterFromResult('a', {}))
     .should.throwError "a is not a valid parameter"
 
 
