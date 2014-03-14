@@ -13,11 +13,12 @@ class Reader
     @types = _.extend {}, commonTypes, types
 
 
-  processObject: (collection, parameter) =>
+  processObject: (object, parameter) =>
+    return object._read.apply @, [parameter] if object.hasOwnProperty '_read'
     reduceObject = (result, value, key) =>
       result[key] = @read value, parameter, result
       result
-    _.reduce collection, reduceObject, {}
+    _.reduce object, reduceObject, {}
 
   read: (typeName, parameter, result={}) ->
 
@@ -34,9 +35,7 @@ class Reader
       when 'function'
         type.value.apply @, [parameter]
       when 'object'
-        if type.value.hasOwnProperty '_read'
-          type.value._read.apply @, [parameter]
-        else if type.isArray
+        if type.isArray
           _.map [0...Math.floor(parameter)], =>
             @processObject type.value, parameter
         else
