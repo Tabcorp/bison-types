@@ -11,7 +11,7 @@ class Reader
   constructor: (buffer, types, options={}) ->
     @buffer = new SmartBufferReader(buffer)
     @types = _.extend {}, commonTypes, types
-
+    @typeMap = {}
 
   processObject: (object, parameter) =>
     return object._read.apply @, [parameter] if object.hasOwnProperty '_read'
@@ -22,7 +22,10 @@ class Reader
 
   read: (typeName, parameter, result={}) ->
 
-    type = getTypeInfo typeName, @types
+    type = @typeMap[typeName]
+
+    if not type
+      type = @typeMap[typeName] = getTypeInfo typeName, @types
 
     if type.isFunction or type.isArray
       parameter = getParameterFromType type, result

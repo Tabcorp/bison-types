@@ -27,10 +27,10 @@
 
 exp = ///
   ^
-  ([a-zA-Z0-9_-]+)                                    #Match the typename
-  ((\(([a-zA-Z0-9_-]+)\)+)|(\[([a-zA-Z0-9_-]+)\]+))   #Match an array or function
+  ([a-z0-9_-]+)                                    #Match the typename
+  ((\(([a-z0-9_-]+)\)+)|(\[([a-z0-9_-]+)\]+))      #Match an array or function
   $
-///
+///i
 
 exports.getTypeInfo = (typeName, types) ->
   result = typeName.match(exp)
