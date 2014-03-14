@@ -2,7 +2,7 @@ _                       = require 'lodash'
 { SmartBufferReader }   = require 'smart-buffer'
 commonTypes             = require './types'
 { getTypeInfo,
-  getParameterFromType} = require './type-helper'
+  getParameterFromResult} = require './type-helper'
 
 
 
@@ -22,13 +22,9 @@ class Reader
 
   read: (typeName, parameter, result={}) ->
 
-    type = @typeMap[typeName]
+    type = @typeMap[typeName] ? getTypeInfo(typeName, @types) if not type
 
-    if not type
-      type = @typeMap[typeName] = getTypeInfo typeName, @types
-
-    if type.isFunction or type.isArray
-      parameter = getParameterFromType type, result
+    parameter = getParameterFromResult type.parameter, result if type.isFunction
 
     switch (typeof type.value)
       when 'undefined'
@@ -39,7 +35,7 @@ class Reader
         type.value.apply @, [parameter]
       when 'object'
         if type.isArray
-          _.map [0...Math.floor(parameter)], =>
+          _.map [0...Math.floor(getParameterFromResult type.arraySize, result)], =>
             @processObject type.value, parameter
         else
           @processObject type.value, parameter
