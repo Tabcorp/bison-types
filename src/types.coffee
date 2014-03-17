@@ -33,7 +33,7 @@ module.exports =
 
   'utf-8' :
     _read : (length) -> @buffer.getString length
-    _write: (val, len) -> @buffer.writeString val, len
+    _write: (val, len) -> @buffer.writeString val, {length:len}
 
   'skip'  :
     _read : (len) -> @buffer.skip len
