@@ -15,8 +15,9 @@ class Writer
 
   processObject: (definition, valueToWrite, parameter) =>
     return definition._write.apply @, [valueToWrite, parameter] if definition.hasOwnProperty '_write'
-    _.each definition, (value, key) =>
-      @write value, valueToWrite[key], parameter, valueToWrite
+    _.each definition, (value) =>
+      key = Object.keys(value)[0]
+      @write value[key], valueToWrite[key], parameter, valueToWrite
 
   write: (typeName, valueToWrite, parameter, result={}) ->
 
