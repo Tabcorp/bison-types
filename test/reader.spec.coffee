@@ -83,33 +83,37 @@ describe 'Bison Reader', ->
   it 'should be able to define a custom type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
     reader = new Reader buf,
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'uint8'
-        d: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
 
     reader.read('custom').should.eql { a: 1,  b: 2, c: 3, d: 4 }
 
   it 'should be able to skip', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
     reader = new Reader buf,
-      custom:
-        a: 'uint8'
-        b: 'skip(2)'
-        c: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'skip(2)'}
+        {c: 'uint8'}
+      ]
 
     reader.read('custom').c.should.eql 4
 
   it 'should be able to define a custom embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03 ]
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
         d: 'uint8'
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 1,  b: 2, c: {d: 3} }
@@ -117,13 +121,15 @@ describe 'Bison Reader', ->
   it 'should be able to define a custom complex embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
-        d: 'uint8'
-        e: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
+        {d: 'uint8'}
+        {e: 'uint8'}
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 1,  b: 2, c: {d: 3, e:4} }
@@ -131,15 +137,18 @@ describe 'Bison Reader', ->
   it 'should be able to define a custom complex embedded type within an embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
-        d: 'uint8'
-        e: 'super-embedded-type'
-      'super-embedded-type':
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
+        {d: 'uint8'}
+        {e: 'super-embedded-type'}
+      ]
+      'super-embedded-type': [
         f: 'uint8'
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 1,  b: 2, c: {d: 3, e: {f:4}} }
@@ -147,8 +156,9 @@ describe 'Bison Reader', ->
   it 'should be able to read a string of a certain length', ->
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     types =
-      custom:
+      custom: [
         a: 'utf-8(5)'
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 'HELLO' }
@@ -158,9 +168,10 @@ describe 'Bison Reader', ->
     types =
       mult:
         _read: (val) -> @buffer.getUInt8() * val
-      custom:
-        a: 'uint8'
-        b: 'mult(4)'
+      custom: [
+        {a: 'uint8'}
+        {b: 'mult(4)'}
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 2,  b: 12 }
@@ -170,9 +181,10 @@ describe 'Bison Reader', ->
     types =
       mult:
         _read: (val) -> @buffer.getUInt8() * val
-      custom:
-        a: 'uint8'
-        b: 'mult(a)'
+      custom: [
+        {a: 'uint8'}
+        {b: 'mult(a)'}
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql { a: 2,  b: 6 }
@@ -180,11 +192,13 @@ describe 'Bison Reader', ->
   it 'should be able to read an array', ->
     buf = new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
     types =
-      object:
+      object: [
         c: 'uint8'
-      custom:
-        a: 'uint8'
-        b: 'object[a]'
+      ]
+      custom: [
+        {a: 'uint8'}
+        {b: 'object[a]'}
+      ]
 
     reader = new Reader buf, types
     reader.read('custom').should.eql

@@ -15,10 +15,10 @@ class Reader
 
   processObject: (object, parameter) =>
     return object._read.apply @, [parameter] if object.hasOwnProperty '_read'
-    reduceObject = (result, value, key) =>
-      result[key] = @read value, parameter, result
-      result
-    _.reduce object, reduceObject, {}
+    _.reduce object, ((res, value) =>
+      key = Object.keys(value)[0]
+      res[key] = @read value[key], parameter, res
+      res) , {}
 
   read: (typeName, parameter, result={}) ->
 

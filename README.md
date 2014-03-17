@@ -22,16 +22,18 @@ bison = require 'bison-types'
 types = 
 
   # top-level type
-  'timeline':
-    count: 'uint16'
-    messages: 'message[count]'
+  'timeline': [
+    {count: 'uint16'}
+    {messages: 'message[count]'}
+  ]
 
   # sub type
-  'message':
-    id: 'uint8'
-    timestamp: 'uint16'
-    length: 'uint16'
-    text: 'utf-8(length)'
+  'message': [
+    {id: 'uint8'}
+    {timestamp: 'uint16'}
+    {length: 'uint16'}
+    {text: 'utf-8(length)'}
+  ]
 
 # time to read!
 
@@ -85,12 +87,14 @@ There are 2 different ways that you can define a custom type
 
 ``` coffee
   types = 
-    my-other-type: 
-      a: 'uint8'
-      b: 'uint16'
-    my-type:
-      c: 'my-other-type'
-      d: 'uint8'
+    my-other-type: [
+      {a: 'uint8'}
+      {b: 'uint16'}
+    ]
+    my-type: [
+      {c: 'my-other-type'}
+      {d: 'uint8'}
+    ]
 ```
 would create an object like
 
@@ -126,11 +130,12 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
 
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
     types = 
-      my-type:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'uint8'
-        d: 'uint8'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') # myType = { a: 1,  b: 2, c: 3, d: 4 }
@@ -142,8 +147,9 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
     
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     types =
-      my-type:
+      my-type: [
         a: 'utf-8(5)'
+      ]
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') # myType = { a: 'HELLO' }
@@ -156,12 +162,14 @@ The power of bison-types is evident as you define more complex types
 
     buf = new Buffer [ 0x01, 0x03, 0x04 ]
     types = 
-      my-type:
-        a: 'uint8'
-        b: 'my-other-type'
-      my-other-type:
-        c: 'uint8'
-        d: 'uint8'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'my-other-type'}
+      ]
+      my-other-type: [
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') # myType = { a: 1,  b: { c: 3, d: 4 }}
@@ -177,9 +185,10 @@ The power of bison-types is evident as you define more complex types
     types = 
       mult:
         _read: (val) -> @buffer.getUInt8() * val
-      my-type:
-        a: 'uint8'
-        b: 'mult(a)'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'mult(a)'}
+      ]
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') # myType = { a: 4,  b: 8}
@@ -191,11 +200,13 @@ You can specify arrays in a similar matter
     bison = require 'bison-types'
     buf = new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
     types =
-      object:
+      object: [
         c: 'uint8'
-      my-type:
-        a: 'uint8'
-        b: 'object[a]'
+      ]
+      my-type: [
+        {a: 'uint8'}
+        {b: 'object[a]'}
+      ]
     options = {bigEndian: false}
     reader = new bison.Reader buf, types, options
     myType = reader.read('my-type') 
@@ -214,11 +225,12 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
 
     buf = new Buffer 4
     types = 
-      my-type:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'uint8'
-        d: 'uint8'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 1,  b: 2, c: 3, d: 4 }
@@ -231,8 +243,9 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
     
     buf = new Buffer 5
     types =
-      my-type:
+      my-type: [
         a: 'utf-8'
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 'HELLO' }
@@ -245,8 +258,9 @@ You can also pass in options, look at [smart-buffer](https://github.com/TabDigit
     
     buf = new Buffer 10
     types =
-      my-type:
+      my-type: [
         a: 'utf-8(5)'
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 'HELLOWORLD' }
@@ -260,12 +274,14 @@ The power of bison-types is evident as you define more complex types
 
     buf = new Buffer 4
     types = 
-      my-type:
-        a: 'uint8'
-        b: 'my-other-type'
-      my-other-type:
-        c: 'uint8'
-        d: 'uint8'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'my-other-type'}
+      ]
+      my-other-type: [
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 1,  b: { c: 3, d: 4 }}
@@ -282,9 +298,10 @@ The power of bison-types is evident as you define more complex types
     types = 
       div:
         _write: (val, divider) -> @buffer.writeUInt8(val/divider)
-      my-type:
-        a: 'uint8'
-        b: 'div(a)'
+      my-type: [
+        {a: 'uint8'}
+        {b: 'div(a)'}
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 4,  b: 8}
@@ -297,11 +314,13 @@ You can specify arrays in a similar matter
     bison = require 'bison-types'
     buf = new Buffer 4 
     types =
-      object:
+      object: [
         c: 'uint8'
-      my-type:
-        a: 'uint8'
-        b: 'object[a]'
+      ]
+      my-type: [
+        {a: 'uint8'}
+        {b: 'object[a]'}
+      ]
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 3, b:[{c:1},{c:2},{c:3}] }

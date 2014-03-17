@@ -98,11 +98,12 @@ describe 'Bison Writer', ->
   it 'should be able to define a custom type', ->
     buf = new Buffer 4
     writer = new Writer buf,
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'uint8'
-        d: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'uint8'}
+        {d: 'uint8'}
+      ]
 
     writer.write 'custom', { a: 1,  b: 2, c: 3, d: 4 }
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
@@ -111,10 +112,11 @@ describe 'Bison Writer', ->
     buf = new Buffer 4
     buf.fill 0
     writer = new Writer buf,
-      custom:
-        a: 'uint8'
-        b: 'skip(2)'
-        c: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'skip(2)'}
+        {c: 'uint8'}
+      ]
 
     writer.write 'custom', {a: 1, c: 4}
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x00, 0x00, 0x04 ]
@@ -122,12 +124,14 @@ describe 'Bison Writer', ->
   it 'should be able to define a custom embedded type', ->
     buf = new Buffer 3
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
         d: 'uint8'
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 1,  b: 2, c: {d: 3} }
@@ -136,13 +140,15 @@ describe 'Bison Writer', ->
   it 'should be able to define a custom complex embedded type', ->
     buf = new Buffer 4
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
-        d: 'uint8'
-        e: 'uint8'
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
+        {d: 'uint8'}
+        {e: 'uint8'}
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 1,  b: 2, c: {d: 3, e:4} }
@@ -151,15 +157,18 @@ describe 'Bison Writer', ->
   it 'should be able to define a custom complex embedded type within an embedded type', ->
     buf = new Buffer 4
     types =
-      custom:
-        a: 'uint8'
-        b: 'uint8'
-        c: 'embedded-type'
-      'embedded-type':
-        d: 'uint8'
-        e: 'super-embedded-type'
-      'super-embedded-type':
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+        {c: 'embedded-type'}
+      ]
+      'embedded-type': [
+        {d: 'uint8'}
+        {e: 'super-embedded-type'}
+      ]
+      'super-embedded-type': [
         f: 'uint8'
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 1,  b: 2, c: {d: 3, e: {f:4}} }
@@ -169,8 +178,9 @@ describe 'Bison Writer', ->
     buf = new Buffer 10
     buf.fill 0
     types =
-      custom:
+      custom: [
         a: 'utf-8(5)'
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 'HELLOWORLD' }
@@ -181,9 +191,10 @@ describe 'Bison Writer', ->
     types =
       divide:
         _write: (val, divider) -> @buffer.writeUInt8(val / divider)
-      custom:
-        a: 'uint8'
-        b: 'divide(4)'
+      custom: [
+        {a: 'uint8'}
+        {b: 'divide(4)'}
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 2,  b: 12 }
@@ -194,9 +205,10 @@ describe 'Bison Writer', ->
     types =
       divide:
         _write: (val, divider) -> @buffer.writeUInt8(val / divider)
-      custom:
-        a: 'uint8'
-        b: 'divide(a)'
+      custom: [
+        {a: 'uint8'}
+        {b: 'divide(a)'}
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom', { a: 2,  b: 6 }
@@ -205,11 +217,13 @@ describe 'Bison Writer', ->
   it 'should be able to write an array', ->
     buf = new Buffer 4
     types =
-      object:
+      object: [
         c: 'uint8'
-      custom:
-        a: 'uint8'
-        b: 'object[a]'
+      ]
+      custom: [
+        {a: 'uint8'}
+        {b: 'object[a]'}
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom',
@@ -225,10 +239,12 @@ describe 'Bison Writer', ->
     buf = new Buffer 5
     buf.fill 0
     types =
-      object:
+      object: [
         c: 'uint8'
-      custom:
+      ]
+      custom: [
         b: 'object[3]'
+      ]
 
     writer = new Writer buf, types
     writer.write 'custom',
