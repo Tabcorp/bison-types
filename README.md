@@ -307,6 +307,22 @@ The power of bison-types is evident as you define more complex types
     writer.write 'my-type', { a: 4,  b: 8}
     # buf will equal [ 0x04, 0x02 ]
 ```
+### Overriding a value
+You can specify a specific value using the following syntax
+``` coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 2
+    types = 
+      my-type: [
+        {a: 'uint8=1'}
+        {b: 'uint8=2'}
+      ]
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', {}
+    # buf will equal [ 0x01, 0x02 ]
+```
 ### Arrays
 You can specify arrays in a similar matter
 
@@ -324,6 +340,25 @@ You can specify arrays in a similar matter
     options = {bigEndian: false}
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 3, b:[{c:1},{c:2},{c:3}] }
+    # buf will equal [ 0x03, 0x01, 0x02, 0x03 ]
+```
+### Using an array length as a parameter
+This is a shorthand of the above example
+
+``` coffee
+    bison = require 'bison-types'
+    buf = new Buffer 4 
+    types =
+      object: [
+        c: 'uint8'
+      ]
+      my-type: [
+        {a: 'uint8=b.length'}
+        {b: 'object[b.length]'}
+      ]
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { b:[{c:1},{c:2},{c:3}] }
     # buf will equal [ 0x03, 0x01, 0x02, 0x03 ]
 ```
 
