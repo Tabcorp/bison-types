@@ -256,9 +256,28 @@ describe 'Bison Writer', ->
       ]
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03, 0x00, 0x00 ] #Doesn't write last 2 values
 
+  it 'should write a UInt8 with an override value', ->
+    buf = new Buffer 1
+    writer = new Writer buf
+    writer.write 'uint8=3', 5
+    writer.rawBuffer().should.eql new Buffer [ 0x03 ]
+
   it 'should be able to write an array of type that is defined with _write function', ->
     buf = new Buffer 3
 
     writer = new Writer buf, {}
     writer.write 'uint8[3]', [1,2,3]
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03 ]
+
+  it 'should be able to write array and size', ->
+    buf = new Buffer 4
+    buf.fill 0
+    types =
+      custom: [
+        {a: 'uint8=b.length'}
+        {b: 'uint8[b.length]'}
+      ]
+
+    writer = new Writer buf, types
+    writer.write 'custom', {b: [1,2,3]}
+    writer.rawBuffer().should.eql new Buffer [ 0x03, 0x01, 0x02, 0x03 ]

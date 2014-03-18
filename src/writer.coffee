@@ -24,6 +24,7 @@ class Writer
     type = @typeMap[typeName] ? getTypeInfo(typeName, @types) if not type
 
     parameter = getParameterFromResult type.parameter, result if type.isFunction
+    valueToWrite = getParameterFromResult type.overrideValue, result if type.isOverride
 
     switch (typeof type.value)
       when 'undefined'
