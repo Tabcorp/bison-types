@@ -3,6 +3,28 @@ Writer = require "#{SRC}/writer"
 
 describe 'Bison Writer', ->
 
+  it 'should create a writer with a default options', ->
+    buf = new Buffer 8
+    writer = new Writer buf
+    writer.buffer.bigEndian.should.eql false
+    writer.buffer.getOffset().should.eql 0
+    writer.buffer.noAssert.should.eql true
+
+  it 'should create a writer with a specified offset', ->
+    buf = new Buffer 8
+    writer = new Writer buf, {}, {offset:4}
+    writer.buffer.getOffset().should.eql 4
+
+  it 'should create a writer with a specified endian-ness', ->
+    buf = new Buffer 8
+    writer = new Writer buf, {}, {bigEndian:true}
+    writer.buffer.bigEndian.should.eql true
+
+  it 'should create a writer with a specified value for noAssert', ->
+    buf = new Buffer 8
+    writer = new Writer buf, {}, {noAssert:false}
+    writer.buffer.noAssert.should.eql false
+
   it 'should write a UInt8', ->
     buf = new Buffer 1
     writer = new Writer buf

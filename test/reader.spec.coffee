@@ -3,6 +3,28 @@ Reader = require "#{SRC}/reader"
 
 describe 'Bison Reader', ->
 
+  it 'should create a reader with a default options', ->
+    buf = new Buffer 8
+    reader = new Reader buf
+    reader.buffer.bigEndian.should.eql false
+    reader.buffer.getOffset().should.eql 0
+    reader.buffer.noAssert.should.eql true
+
+  it 'should create a reader with a specified offset', ->
+    buf = new Buffer 8
+    reader = new Reader buf, {}, {offset:4}
+    reader.buffer.getOffset().should.eql 4
+
+  it 'should create a reader with a specified endian-ness', ->
+    buf = new Buffer 8
+    reader = new Reader buf, {}, {bigEndian:true}
+    reader.buffer.bigEndian.should.eql true
+
+  it 'should create a reader with a specified value for noAssert', ->
+    buf = new Buffer 8
+    reader = new Reader buf, {}, {noAssert:false}
+    reader.buffer.noAssert.should.eql false
+
   it 'should read a UInt8', ->
     buf = new Buffer [ 0x01 ]
     reader = new Reader buf
