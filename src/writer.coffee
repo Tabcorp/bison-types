@@ -1,5 +1,5 @@
 _                       = require 'lodash'
-{ SmartBufferWriter }   = require 'smart-buffer'
+{ CleverBufferWriter }   = require 'clever-buffer'
 commonTypes             = require './types'
 { getTypeInfo,
   getParameterFromResult} = require './type-helper'
@@ -9,7 +9,7 @@ commonTypes             = require './types'
 class Writer
 
   constructor: (buffer, types, options={}) ->
-    @buffer = new SmartBufferWriter(buffer)
+    @buffer = new CleverBufferWriter(buffer)
     @types = _.extend {}, commonTypes, types
     @typeMap = {}
 

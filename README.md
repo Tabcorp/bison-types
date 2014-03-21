@@ -61,7 +61,7 @@ writer.write 'timeline', {
 
 ```
 
-*Note:*  bison-types uses [smart-buffer](https://github.com/TabDigital/smart-buffer) under the hood for all buffer manipulation.
+*Note:*  bison-types uses [clever-buffer](https://github.com/TabDigital/clever-buffer) under the hood for all buffer manipulation.
 
 
 ## Provided simple types
@@ -103,7 +103,7 @@ would create an object like
 ```
 
 ### By explicitly creating a _read function
-We expose the underlying [smart-buffer](https://github.com/TabDigital/smart-buffer) as @buffer.
+We expose the underlying [clever-buffer](https://github.com/TabDigital/clever-buffer) as @buffer.
 
 You can call any of it's methods
 
@@ -122,7 +122,7 @@ and multiply the value to be written when writing
 
 You need to pass in a buffer to read from, and any custom types that you may have. 
 
-You can also pass in options, look at [smart-buffer](https://github.com/TabDigital/smart-buffer) for a full list of options
+You can also pass in options, look at [clever-buffer](https://github.com/TabDigital/clever-buffer) for a full list of options
 
 ### Reading some integers
 ``` coffee
@@ -217,7 +217,7 @@ You can specify arrays in a similar matter
 
 You need to pass in a buffer to write to, and any custom types that you may have. 
 
-You can also pass in options, look at [smart-buffer](https://github.com/TabDigital/smart-buffer) for a full list of options
+You can also pass in options, look at [clever-buffer](https://github.com/TabDigital/clever-buffer) for a full list of options
 
 ### Writing some integers
 ``` coffee
