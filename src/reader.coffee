@@ -9,7 +9,7 @@ commonTypes             = require './types'
 class Reader
 
   constructor: (buffer, types, options={}) ->
-    @buffer = new CleverBufferReader(buffer)
+    @buffer = new CleverBufferReader(buffer, options)
     @types = _.extend {}, commonTypes, types
     @typeMap = {}
 

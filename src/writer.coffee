@@ -9,7 +9,7 @@ commonTypes             = require './types'
 class Writer
 
   constructor: (buffer, types, options={}) ->
-    @buffer = new CleverBufferWriter(buffer)
+    @buffer = new CleverBufferWriter(buffer, options)
     @types = _.extend {}, commonTypes, types
     @typeMap = {}
 
