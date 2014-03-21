@@ -21,7 +21,7 @@ describe 'Bison Writer', ->
     writer.write 'uint32', 67305985
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
 
-  xit 'should write a UInt64', ->
+  it 'should write a UInt64', ->
     buf = new Buffer 8
     writer = new Writer buf
     writer.write 'uint64', '578437695752307201'
@@ -45,7 +45,7 @@ describe 'Bison Writer', ->
     writer.write 'uint32', 4294967295
     writer.rawBuffer().should.eql new Buffer [0xFF, 0xFF, 0xFF, 0xFF]
 
-  xit 'should write max UInt64', ->
+  it 'should write max UInt64', ->
     buf = new Buffer 8
     writer = new Writer buf
     writer.write 'uint64', '18446744073709551615'
@@ -69,7 +69,7 @@ describe 'Bison Writer', ->
     writer.write 'uint32', -1
     writer.rawBuffer().should.eql new Buffer [0xFF, 0xFF, 0xFF, 0xFF]
 
-  xit 'should write Int64', ->
+  it 'should write Int64', ->
     buf = new Buffer 8
     writer = new Writer buf
     writer.write 'uint64', '-1'

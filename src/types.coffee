@@ -29,11 +29,11 @@ module.exports =
 
   'int64':
     _read : -> @buffer.getInt64()
-    _write: (val) -> @buffer.writeInt64(val) #TODO doesn't exist yet
+    _write: (val) -> @buffer.writeInt64(val)
 
   'utf-8' :
-    _read : (length) -> @buffer.getString length
-    _write: (val, len) -> @buffer.writeString val, {length:len}
+    _read : (length) -> @buffer.getString {length}
+    _write: (val, length) -> @buffer.writeString val, {length}
 
   'skip'  :
     _read : (len) -> @buffer.skip len

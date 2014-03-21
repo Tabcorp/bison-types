@@ -1,5 +1,5 @@
 _                       = require 'lodash'
-{ SmartBufferReader }   = require 'smart-buffer'
+{ CleverBufferReader }   = require 'clever-buffer'
 commonTypes             = require './types'
 { getTypeInfo,
   getParameterFromResult} = require './type-helper'
@@ -9,7 +9,7 @@ commonTypes             = require './types'
 class Reader
 
   constructor: (buffer, types, options={}) ->
-    @buffer = new SmartBufferReader(buffer)
+    @buffer = new CleverBufferReader(buffer)
     @types = _.extend {}, commonTypes, types
     @typeMap = {}
 
