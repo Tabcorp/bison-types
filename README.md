@@ -8,6 +8,10 @@
 
 If you answered yes to any of the above questions, then `bison-types` is for you
 
+[![Build Status](https://travis-ci.org/TabDigital/bison-types.svg?branch=master)](https://travis-ci.org/TabDigital/bison-types)
+
+[![NPM](https://nodei.co/npm/bison-types.svg?downloads=true)](https://nodei.co/npm/bison-types/)
+
 ## How does it work?
 
 `bison-types` allows you to define custom types.
