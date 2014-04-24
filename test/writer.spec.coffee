@@ -97,6 +97,18 @@ describe 'Bison Writer', ->
     writer.write 'uint64', '-1'
     writer.rawBuffer().should.eql new Buffer [ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]
 
+  it 'should write Bool', ->
+    buf = new Buffer 5
+    writer = new Writer buf
+    # falsy
+    writer.write 'bool', false
+    writer.write 'bool', 0
+    # truthy
+    writer.write 'bool', true
+    writer.write 'bool', 1
+    writer.write 'bool', 'hi'
+    writer.rawBuffer().should.eql new Buffer [ 0x00, 0x00, 0x01, 0x01, 0x01 ]
+
   it 'should write string', ->
     buf =  new Buffer 5
     writer = new Writer buf

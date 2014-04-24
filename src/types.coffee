@@ -35,6 +35,10 @@ module.exports =
     _read : (length) -> @buffer.getString {length}
     _write: (val, length) -> @buffer.writeString val, {length}
 
+  'bool' :
+    _read : -> if @buffer.getUInt8() then true else false
+    _write: (val) -> @buffer.writeUInt8(if val then 1 else 0)
+
   'skip'  :
     _read : (len) -> @buffer.skip len
     _write: (val, len) -> @buffer.skip len

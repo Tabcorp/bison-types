@@ -61,8 +61,6 @@ writer.write 'timeline', {
   ]
 }
 
-
-
 ```
 
 *Note:*  bison-types uses [clever-buffer](https://github.com/TabDigital/clever-buffer) under the hood for all buffer manipulation.
@@ -79,6 +77,7 @@ writer.write 'timeline', {
 * `int32`  - signed 32 bit integer
 * `int64`  - signed 64 bit integer
 * `utf-8`  - utf-8 encoded string
+* `bool`   - boolean (stored as 8 bit integer)
 * `skip`   - will skip specified bytes
 
 
@@ -89,7 +88,7 @@ writer.write 'timeline', {
 There are 2 different ways that you can define a custom type
 ### By mapping it to another type
 
-``` coffee
+```coffee
   types = 
     my-other-type: [
       {a: 'uint8'}
@@ -102,7 +101,7 @@ There are 2 different ways that you can define a custom type
 ```
 would create an object like
 
-``` coffee
+```coffee
   myType = {c: {a: 12, b: 123}, d: 1234}
 ```
 
@@ -111,7 +110,7 @@ We expose the underlying [clever-buffer](https://github.com/TabDigital/clever-bu
 
 You can call any of it's methods
 
-``` coffee
+```coffee
   types = 
     multiply:
       _read:  (multiplier) ->
@@ -129,7 +128,7 @@ You need to pass in a buffer to read from, and any custom types that you may hav
 You can also pass in options, look at [clever-buffer](https://github.com/TabDigital/clever-buffer) for a full list of options
 
 ### Reading some integers
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
@@ -146,7 +145,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
 ```
 
 ### Reading a string
-``` coffee
+```coffee
     bison = require 'bison-types'
     
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
@@ -161,7 +160,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
 
 ### Complex types
 The power of bison-types is evident as you define more complex types
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x01, 0x03, 0x04 ]
@@ -182,7 +181,7 @@ The power of bison-types is evident as you define more complex types
 ### Using previous values as parameters
 You can use previously resolved values as parameters to types
 The power of bison-types is evident as you define more complex types
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x04, 0x02 ]
@@ -200,7 +199,7 @@ The power of bison-types is evident as you define more complex types
 ### Arrays
 You can specify arrays in a similar matter
 
-``` coffee
+```coffee
     bison = require 'bison-types'
     buf = new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
     types =
@@ -224,7 +223,7 @@ You need to pass in a buffer to write to, and any custom types that you may have
 You can also pass in options, look at [clever-buffer](https://github.com/TabDigital/clever-buffer) for a full list of options
 
 ### Writing some integers
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer 4
@@ -242,7 +241,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
 ```
 
 ### Writing a string
-``` coffee
+```coffee
     bison = require 'bison-types'
     
     buf = new Buffer 5
@@ -257,7 +256,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
 ```
 
 ### Only writing a certain length of string
-``` coffee
+```coffee
     bison = require 'bison-types'
     
     buf = new Buffer 10
@@ -273,7 +272,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
 
 ### Complex types
 The power of bison-types is evident as you define more complex types
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer 4
@@ -295,7 +294,7 @@ The power of bison-types is evident as you define more complex types
 ### Using other values as parameters
 You can use other values as parameters to types
 The power of bison-types is evident as you define more complex types
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer 2
@@ -313,7 +312,7 @@ The power of bison-types is evident as you define more complex types
 ```
 ### Overriding a value
 You can specify a specific value using the following syntax
-``` coffee
+```coffee
     bison = require 'bison-types'
 
     buf = new Buffer 2
@@ -330,7 +329,7 @@ You can specify a specific value using the following syntax
 ### Arrays
 You can specify arrays in a similar matter
 
-``` coffee
+```coffee
     bison = require 'bison-types'
     buf = new Buffer 4 
     types =
@@ -349,7 +348,7 @@ You can specify arrays in a similar matter
 ### Using an array length as a parameter
 This is a shorthand of the above example
 
-``` coffee
+```coffee
     bison = require 'bison-types'
     buf = new Buffer 4 
     types =

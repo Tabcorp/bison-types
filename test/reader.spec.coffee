@@ -85,6 +85,11 @@ describe 'Bison Reader', ->
     reader = new Reader buf
     reader.read('int64').should.eql '-1'
 
+  it 'should read Bool', ->
+    new Reader(new Buffer [ 0x00 ]).read('bool').should.eql false
+    new Reader(new Buffer [ 0x01 ]).read('bool').should.eql true
+    new Reader(new Buffer [ 0x5a ]).read('bool').should.eql true
+
   it 'should read string', ->
     buf =  new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
     reader = new Reader buf
