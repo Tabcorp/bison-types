@@ -1,16 +1,16 @@
 _                       = require 'lodash'
 { CleverBufferReader }  = require 'clever-buffer'
-commonTypes             = require './types'
+preCompile              = require './preCompile'
 typeHelper              = require './type-helper'
 
 
 
 class Reader
 
-  constructor: (buffer, types, options={}) ->
+  constructor: (buffer, @typeSet, options={}) ->
     @buffer = new CleverBufferReader(buffer, options)
-    @types = _.extend {}, commonTypes, types
-    @typeMap = {}
+    if not @typeSet
+      @typeSet = preCompile {}
 
   processObject: (object, parameter) =>
     return object._read.apply @, [parameter] if object.hasOwnProperty '_read'
@@ -21,9 +21,9 @@ class Reader
 
   read: (typeName, parameter, result={}) ->
 
-    type = @typeMap[typeName]
+    type = @typeSet.definitions[typeName]
     if not type
-      type = @typeMap[typeName] = typeHelper.getTypeInfo(typeName, @types)
+      type = @typeSet.definitions[typeName] = typeHelper.getTypeInfo(typeName, @typeSet.types)
 
     parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
 

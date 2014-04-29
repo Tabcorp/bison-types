@@ -1,5 +1,6 @@
 should     = require 'should'
 sinon      = require 'sinon'
+preCompile = require "#{SRC}/preCompile"
 Reader     = require "#{SRC}/reader"
 typeHelper = require "#{SRC}/type-helper"
 
@@ -20,17 +21,17 @@ describe 'Bison Reader', ->
 
   it 'should create a reader with a specified offset', ->
     buf = new Buffer 8
-    reader = new Reader buf, {}, {offset:4}
+    reader = new Reader buf, null, {offset:4}
     reader.buffer.getOffset().should.eql 4
 
   it 'should create a reader with a specified endian-ness', ->
     buf = new Buffer 8
-    reader = new Reader buf, {}, {bigEndian:true}
+    reader = new Reader buf, null, {bigEndian:true}
     reader.buffer.bigEndian.should.eql true
 
   it 'should create a reader with a specified value for noAssert', ->
     buf = new Buffer 8
-    reader = new Reader buf, {}, {noAssert:false}
+    reader = new Reader buf, null, {noAssert:false}
     reader.buffer.noAssert.should.eql false
 
   it 'should read a UInt8', ->
@@ -105,42 +106,42 @@ describe 'Bison Reader', ->
 
   it 'should be able to define a simple type', ->
     buf = new Buffer [ 0x01 ]
-    reader = new Reader buf, {'my-simple-type': 'uint8'}
+    reader = new Reader buf, preCompile {'my-simple-type': 'uint8'}
     reader.read('my-simple-type').should.eql 1
 
   it 'should be able to define a complex type', ->
     buf = new Buffer [ 0x01 ]
-    reader = new Reader buf,
-      complex:
-        _read: (val) -> @buffer.getUInt8() * val
+    types = preCompile complex:
+      _read: (val) -> @buffer.getUInt8() * val
+    reader = new Reader buf, types
+
     reader.read('complex', 5).should.eql 5
 
   it 'should be able to define a custom type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
-    reader = new Reader buf,
-      custom: [
-        {a: 'uint8'}
-        {b: 'uint8'}
-        {c: 'uint8'}
-        {d: 'uint8'}
-      ]
-
+    types = preCompile custom: [
+      {a: 'uint8'}
+      {b: 'uint8'}
+      {c: 'uint8'}
+      {d: 'uint8'}
+    ]
+    reader = new Reader buf, types
     reader.read('custom').should.eql { a: 1,  b: 2, c: 3, d: 4 }
 
   it 'should be able to skip', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
-    reader = new Reader buf,
-      custom: [
-        {a: 'uint8'}
-        {b: 'skip(2)'}
-        {c: 'uint8'}
-      ]
+    types = preCompile custom: [
+      {a: 'uint8'}
+      {b: 'skip(2)'}
+      {c: 'uint8'}
+    ]
 
+    reader = new Reader buf, types
     reader.read('custom').c.should.eql 4
 
   it 'should be able to define a custom embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03 ]
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -155,7 +156,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to define a custom complex embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -171,7 +172,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to define a custom complex embedded type within an embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -190,7 +191,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to read a string of a certain length', ->
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
-    types =
+    types = preCompile
       custom: [
         a: 'utf-8(5)'
       ]
@@ -200,7 +201,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to use specify a parameter', ->
     buf = new Buffer [ 0x02, 0x03 ]
-    types =
+    types = preCompile
       mult:
         _read: (val) -> @buffer.getUInt8() * val
       custom: [
@@ -213,7 +214,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to use previously resolved value', ->
     buf = new Buffer [ 0x02, 0x03 ]
-    types =
+    types = preCompile
       mult:
         _read: (val) -> @buffer.getUInt8() * val
       custom: [
@@ -226,7 +227,7 @@ describe 'Bison Reader', ->
 
   it 'should be able to read an array', ->
     buf = new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
-    types =
+    types = preCompile
       object: [
         c: 'uint8'
       ]
@@ -247,12 +248,12 @@ describe 'Bison Reader', ->
   it 'should be able to read an array of type that is defined with _read function', ->
     buf = new Buffer [ 0x01, 0x02, 0x03 ]
 
-    reader = new Reader buf, {}
+    reader = new Reader buf
     reader.read('uint8[3]').should.eql [1,2,3]
 
   it 'should only create type definition once per type', ->
     buf = new Buffer [ 0x01, 0x02]
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}

@@ -1,5 +1,6 @@
 should     = require 'should'
 sinon      = require 'sinon'
+preCompile = require "#{SRC}/preCompile"
 Writer     = require "#{SRC}/writer"
 typeHelper = require "#{SRC}/type-helper"
 
@@ -20,17 +21,17 @@ describe 'Bison Writer', ->
 
   it 'should create a writer with a specified offset', ->
     buf = new Buffer 8
-    writer = new Writer buf, {}, {offset:4}
+    writer = new Writer buf, null, {offset:4}
     writer.buffer.getOffset().should.eql 4
 
   it 'should create a writer with a specified endian-ness', ->
     buf = new Buffer 8
-    writer = new Writer buf, {}, {bigEndian:true}
+    writer = new Writer buf, null, {bigEndian:true}
     writer.buffer.bigEndian.should.eql true
 
   it 'should create a writer with a specified value for noAssert', ->
     buf = new Buffer 8
-    writer = new Writer buf, {}, {noAssert:false}
+    writer = new Writer buf, null, {noAssert:false}
     writer.buffer.noAssert.should.eql false
 
   it 'should write a UInt8', ->
@@ -125,47 +126,48 @@ describe 'Bison Writer', ->
 
   it 'should be able to define a simple type', ->
     buf = new Buffer 1
-    writer = new Writer buf, {'my-simple-type': 'uint8'}
+    writer = new Writer buf, preCompile {'my-simple-type': 'uint8'}
     writer.write 'my-simple-type', 5
     writer.rawBuffer().should.eql new Buffer [0x05]
 
   it 'should be able to define a complex type', ->
     buf = new Buffer 1
-    writer = new Writer buf,
+    types = preCompile
       complex:
         _write: (val, multiplier) -> @buffer.writeUInt8 val*multiplier
+    writer = new Writer buf, types
     writer.write 'complex', 1, 5
     writer.rawBuffer().should.eql new Buffer [0x05]
 
   it 'should be able to define a custom type', ->
     buf = new Buffer 4
-    writer = new Writer buf,
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
         {c: 'uint8'}
         {d: 'uint8'}
       ]
-
+    writer = new Writer buf, types
     writer.write 'custom', { a: 1,  b: 2, c: 3, d: 4 }
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
 
   it 'should be able to skip', ->
     buf = new Buffer 4
     buf.fill 0
-    writer = new Writer buf,
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'skip(2)'}
         {c: 'uint8'}
       ]
-
+    writer = new Writer buf, types
     writer.write 'custom', {a: 1, c: 4}
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x00, 0x00, 0x04 ]
 
   it 'should be able to define a custom embedded type', ->
     buf = new Buffer 3
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -181,7 +183,7 @@ describe 'Bison Writer', ->
 
   it 'should be able to define a custom complex embedded type', ->
     buf = new Buffer 4
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -198,7 +200,7 @@ describe 'Bison Writer', ->
 
   it 'should be able to define a custom complex embedded type within an embedded type', ->
     buf = new Buffer 4
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -219,7 +221,7 @@ describe 'Bison Writer', ->
   it 'should be able to write a string of a certain length', ->
     buf = new Buffer 10
     buf.fill 0
-    types =
+    types = preCompile
       custom: [
         a: 'utf-8(5)'
       ]
@@ -230,7 +232,7 @@ describe 'Bison Writer', ->
 
   it 'should be able to specify a parameter', ->
     buf = new Buffer 2
-    types =
+    types = preCompile
       divide:
         _write: (val, divider) -> @buffer.writeUInt8(val / divider)
       custom: [
@@ -244,7 +246,7 @@ describe 'Bison Writer', ->
 
   it 'should be able to use previously resolved value', ->
     buf = new Buffer 2
-    types =
+    types = preCompile
       divide:
         _write: (val, divider) -> @buffer.writeUInt8(val / divider)
       custom: [
@@ -258,7 +260,7 @@ describe 'Bison Writer', ->
 
   it 'should be able to write an array', ->
     buf = new Buffer 4
-    types =
+    types = preCompile
       object: [
         c: 'uint8'
       ]
@@ -280,7 +282,7 @@ describe 'Bison Writer', ->
   it 'should only write specified amount in array', ->
     buf = new Buffer 5
     buf.fill 0
-    types =
+    types = preCompile
       object: [
         c: 'uint8'
       ]
@@ -307,14 +309,14 @@ describe 'Bison Writer', ->
   it 'should be able to write an array of type that is defined with _write function', ->
     buf = new Buffer 3
 
-    writer = new Writer buf, {}
+    writer = new Writer buf
     writer.write 'uint8[3]', [1,2,3]
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03 ]
 
   it 'should be able to write array and size', ->
     buf = new Buffer 4
     buf.fill 0
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8=b.length'}
         {b: 'uint8[b.length]'}
@@ -327,7 +329,7 @@ describe 'Bison Writer', ->
   it 'should only create type definition once per type', ->
     buf = new Buffer 2
     buf.fill 0
-    types =
+    types = preCompile
       custom: [
         {a: 'uint8'}
         {b: 'uint8'}
