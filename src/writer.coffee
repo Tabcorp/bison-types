@@ -1,8 +1,7 @@
 _                       = require 'lodash'
-{ CleverBufferWriter }   = require 'clever-buffer'
+{ CleverBufferWriter }  = require 'clever-buffer'
 commonTypes             = require './types'
-{ getTypeInfo,
-  getParameterFromResult} = require './type-helper'
+typeHelper              = require './type-helper'
 
 
 
@@ -21,10 +20,12 @@ class Writer
 
   write: (typeName, valueToWrite, parameter, result={}) ->
 
-    type = @typeMap[typeName] ? getTypeInfo(typeName, @types) if not type
+    type = @typeMap[typeName]
+    if not type
+      type = @typeMap[typeName] = typeHelper.getTypeInfo(typeName, @types)
 
-    parameter = getParameterFromResult type.parameter, result if type.isFunction
-    valueToWrite = getParameterFromResult type.overrideValue, result if type.isOverride
+    parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
+    valueToWrite = typeHelper.getParameterFromResult type.overrideValue, result if type.isOverride
 
     switch (typeof type.value)
       when 'undefined'
@@ -35,7 +36,7 @@ class Writer
         type.value.apply @, [parameter]
       when 'object'
         if type.isArray
-          _.each [0...Math.floor(getParameterFromResult type.arraySize, result)], (value, key) =>
+          _.each [0...Math.floor(typeHelper.getParameterFromResult type.arraySize, result)], (value, key) =>
             @processObject type.value, valueToWrite[key], parameter
         else
           @processObject type.value, valueToWrite, parameter

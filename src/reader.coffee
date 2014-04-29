@@ -1,8 +1,7 @@
 _                       = require 'lodash'
-{ CleverBufferReader }   = require 'clever-buffer'
+{ CleverBufferReader }  = require 'clever-buffer'
 commonTypes             = require './types'
-{ getTypeInfo,
-  getParameterFromResult} = require './type-helper'
+typeHelper              = require './type-helper'
 
 
 
@@ -22,9 +21,11 @@ class Reader
 
   read: (typeName, parameter, result={}) ->
 
-    type = @typeMap[typeName] ? getTypeInfo(typeName, @types) if not type
+    type = @typeMap[typeName]
+    if not type
+      type = @typeMap[typeName] = typeHelper.getTypeInfo(typeName, @types)
 
-    parameter = getParameterFromResult type.parameter, result if type.isFunction
+    parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
 
     switch (typeof type.value)
       when 'undefined'
@@ -35,7 +36,7 @@ class Reader
         type.value.apply @, [parameter]
       when 'object'
         if type.isArray
-          _.map [0...Math.floor(getParameterFromResult type.arraySize, result)], =>
+          _.map [0...Math.floor(typeHelper.getParameterFromResult type.arraySize, result)], =>
             @processObject type.value, parameter
         else
           @processObject type.value, parameter

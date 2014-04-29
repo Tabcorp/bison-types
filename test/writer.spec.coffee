@@ -1,7 +1,15 @@
-should = require 'should'
-Writer = require "#{SRC}/writer"
+should     = require 'should'
+sinon      = require 'sinon'
+Writer     = require "#{SRC}/writer"
+typeHelper = require "#{SRC}/type-helper"
 
 describe 'Bison Writer', ->
+
+  beforeEach ->
+    sinon.spy typeHelper, 'getTypeInfo'
+
+  afterEach ->
+    typeHelper.getTypeInfo.restore()
 
   it 'should create a writer with a default options', ->
     buf = new Buffer 8
@@ -315,3 +323,17 @@ describe 'Bison Writer', ->
     writer = new Writer buf, types
     writer.write 'custom', {b: [1,2,3]}
     writer.rawBuffer().should.eql new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
+
+  it 'should only create type definition once per type', ->
+    buf = new Buffer 2
+    buf.fill 0
+    types =
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+      ]
+
+    writer = new Writer buf, types
+    writer.write 'custom', {a: 1, b: 2}
+    writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02]
+    typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql 1

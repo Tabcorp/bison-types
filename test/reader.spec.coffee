@@ -1,7 +1,15 @@
-should = require 'should'
-Reader = require "#{SRC}/reader"
+should     = require 'should'
+sinon      = require 'sinon'
+Reader     = require "#{SRC}/reader"
+typeHelper = require "#{SRC}/type-helper"
 
 describe 'Bison Reader', ->
+
+  beforeEach ->
+    sinon.spy typeHelper, 'getTypeInfo'
+
+  afterEach ->
+    typeHelper.getTypeInfo.restore()
 
   it 'should create a reader with a default options', ->
     buf = new Buffer 8
@@ -241,3 +249,15 @@ describe 'Bison Reader', ->
 
     reader = new Reader buf, {}
     reader.read('uint8[3]').should.eql [1,2,3]
+
+  it 'should only create type definition once per type', ->
+    buf = new Buffer [ 0x01, 0x02]
+    types =
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+      ]
+
+    reader = new Reader buf, types
+    reader.read('custom').should.eql {a:1, b:2}
+    typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql 1
