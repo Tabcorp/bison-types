@@ -23,7 +23,7 @@ Pass these types and the buffer to bison-types and it will do the rest.
 ```coffee
 bison = require 'bison-types'
 
-types = 
+types = bison.preCompile
 
   # top-level type
   'timeline': [
@@ -89,7 +89,7 @@ There are 2 different ways that you can define a custom type
 ### By mapping it to another type
 
 ```coffee
-  types = 
+  types = bison.preCompile
     my-other-type: [
       {a: 'uint8'}
       {b: 'uint16'}
@@ -111,7 +111,7 @@ We expose the underlying [clever-buffer](https://github.com/TabDigital/clever-bu
 You can call any of it's methods
 
 ```coffee
-  types = 
+  types = bison.preCompile
     multiply:
       _read:  (multiplier) ->
         @buffer.getUint8() * multiplier
@@ -132,7 +132,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
-    types = 
+    types = bison.preCompile
       my-type: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -149,7 +149,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     bison = require 'bison-types'
     
     buf = new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
-    types =
+    types = bison.preCompile
       my-type: [
         a: 'utf-8(5)'
       ]
@@ -164,7 +164,7 @@ The power of bison-types is evident as you define more complex types
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x01, 0x03, 0x04 ]
-    types = 
+    types = bison.preCompile
       my-type: [
         {a: 'uint8'}
         {b: 'my-other-type'}
@@ -185,7 +185,7 @@ The power of bison-types is evident as you define more complex types
     bison = require 'bison-types'
 
     buf = new Buffer [ 0x04, 0x02 ]
-    types = 
+    types = bison.preCompile
       mult:
         _read: (val) -> @buffer.getUInt8() * val
       my-type: [
@@ -202,7 +202,7 @@ You can specify arrays in a similar matter
 ```coffee
     bison = require 'bison-types'
     buf = new Buffer [ 0x03, 0x01, 0x02, 0x03 ]
-    types =
+    types = bison.preCompile
       object: [
         c: 'uint8'
       ]
@@ -227,7 +227,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     bison = require 'bison-types'
 
     buf = new Buffer 4
-    types = 
+    types = bison.preCompile
       my-type: [
         {a: 'uint8'}
         {b: 'uint8'}
@@ -245,7 +245,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     bison = require 'bison-types'
     
     buf = new Buffer 5
-    types =
+    types = bison.preCompile
       my-type: [
         a: 'utf-8'
       ]
@@ -260,7 +260,7 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     bison = require 'bison-types'
     
     buf = new Buffer 10
-    types =
+    types = bison.preCompile
       my-type: [
         a: 'utf-8(5)'
       ]
@@ -276,7 +276,7 @@ The power of bison-types is evident as you define more complex types
     bison = require 'bison-types'
 
     buf = new Buffer 4
-    types = 
+    types = bison.preCompile
       my-type: [
         {a: 'uint8'}
         {b: 'my-other-type'}
@@ -298,7 +298,7 @@ The power of bison-types is evident as you define more complex types
     bison = require 'bison-types'
 
     buf = new Buffer 2
-    types = 
+    types = bison.preCompile
       div:
         _write: (val, divider) -> @buffer.writeUInt8(val/divider)
       my-type: [
@@ -316,7 +316,7 @@ You can specify a specific value using the following syntax
     bison = require 'bison-types'
 
     buf = new Buffer 2
-    types = 
+    types = bison.preCompile
       my-type: [
         {a: 'uint8=1'}
         {b: 'uint8=2'}
@@ -332,7 +332,7 @@ You can specify arrays in a similar matter
 ```coffee
     bison = require 'bison-types'
     buf = new Buffer 4 
-    types =
+    types = bison.preCompile
       object: [
         c: 'uint8'
       ]
@@ -351,7 +351,7 @@ This is a shorthand of the above example
 ```coffee
     bison = require 'bison-types'
     buf = new Buffer 4 
-    types =
+    types = bison.preCompile
       object: [
         c: 'uint8'
       ]

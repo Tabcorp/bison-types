@@ -1,4 +1,5 @@
-module.exports =
+preCompile = require "#{SRC}/preCompile"
+module.exports = preCompile
   'complex-type' : [
     {a: 'uint8'}
     {b: 'uint16'}

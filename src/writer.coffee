@@ -1,16 +1,16 @@
 _                       = require 'lodash'
 { CleverBufferWriter }  = require 'clever-buffer'
-commonTypes             = require './types'
+preCompile              = require './preCompile'
 typeHelper              = require './type-helper'
 
 
 
 class Writer
 
-  constructor: (buffer, types, options={}) ->
+  constructor: (buffer, @typeSet, options={}) ->
     @buffer = new CleverBufferWriter(buffer, options)
-    @types = _.extend {}, commonTypes, types
-    @typeMap = {}
+    if not @typeSet
+      @typeSet = preCompile {}
 
   processObject: (definition, valueToWrite, parameter) =>
     return definition._write.apply @, [valueToWrite, parameter] if definition.hasOwnProperty '_write'
@@ -20,9 +20,9 @@ class Writer
 
   write: (typeName, valueToWrite, parameter, result={}) ->
 
-    type = @typeMap[typeName]
+    type = @typeSet.definitions[typeName]
     if not type
-      type = @typeMap[typeName] = typeHelper.getTypeInfo(typeName, @types)
+      type = @typeSet.definitions[typeName] = typeHelper.getTypeInfo(typeName, @typeSet.types)
 
     parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
     valueToWrite = typeHelper.getParameterFromResult type.overrideValue, result if type.isOverride
