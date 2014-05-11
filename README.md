@@ -86,18 +86,21 @@ The is also an `enumeration` type, which can be used to represent enums from arr
 
 ```coffee
 # will store the index in the array
-level = bison.enumeration 'uint8', ['admin', 'reader', 'writer']
+levelIndex = bison.enumeration 'uint8', ['admin', 'reader', 'writer']
 
 # will store the value in the object
-level = bison.enumeration 'uint16',
+levelCode = bison.enumeration 'uint16',
   'admin': 0xb8a3
   'reader': 0xb90a
   'writer': 0xf23c
 
 bison.preCompile
+  'levelIndex': levelIndex
+  'levelCode': levelCode
   'user': [
     {id: 'uint8'}
-    {level: level}
+    {levelX: levelIndex}
+    {levelY: levelCode}
   ]
 ```
 
