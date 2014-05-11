@@ -66,7 +66,9 @@ writer.write 'timeline', {
 *Note:*  bison-types uses [clever-buffer](https://github.com/TabDigital/clever-buffer) under the hood for all buffer manipulation.
 
 
-## Provided simple types
+## Provided types
+
+The following types can be declared as a string, for example: `{timestamp: 'uint16'}`.
 
 * `uint8`  - unsigned 8 bit integer
 * `uint16` - unsigned 16 bit integer
@@ -80,12 +82,29 @@ writer.write 'timeline', {
 * `bool`   - boolean (stored as 8 bit integer)
 * `skip`   - will skip specified bytes
 
+The is also an `enumeration` type, which can be used to represent enums from arrays of objects:
+
+```coffee
+# will store the index in the array
+level = bison.enumeration 'uint8', ['admin', 'reader', 'writer']
+
+# will store the value in the object
+level = bison.enumeration 'uint16',
+  'admin': 0xb8a3
+  'reader': 0xb90a
+  'writer': 0xf23c
+
+bison.preCompile
+  'user': [
+    {id: 'uint8'}
+    {level: level}
+  ]
+```
 
 ## Creating your own custom types
 
-*NOTE:* All examples are written in coffeescript
-
 There are 2 different ways that you can define a custom type
+
 ### By mapping it to another type
 
 ```coffee
@@ -106,9 +125,10 @@ would create an object like
 ```
 
 ### By explicitly creating a _read function
+
 We expose the underlying [clever-buffer](https://github.com/TabDigital/clever-buffer) as @buffer.
 
-You can call any of it's methods
+You can call any of its methods
 
 ```coffee
   types = bison.preCompile
