@@ -9,6 +9,8 @@
 If you answered yes to any of the above questions, then `bison-types` is for you
 
 [![Build Status](https://travis-ci.org/TabDigital/bison-types.svg?branch=master)](https://travis-ci.org/TabDigital/bison-types)
+[![Dependency Status](https://david-dm.org/TabDigital/bison-types.png?theme=shields.io)](https://david-dm.org/TabDigital/bison-types) 
+[![devDependency Status](https://david-dm.org/TabDigital/bison-types/dev-status.png?theme=shields.io)](https://david-dm.org/TabDigital/bison-types#info=devDependencies)
 
 [![NPM](https://nodei.co/npm/bison-types.svg?downloads=true)](https://nodei.co/npm/bison-types/)
 
