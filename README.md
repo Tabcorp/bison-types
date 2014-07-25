@@ -2,17 +2,18 @@
 
 ![logo](bison-types.png)
 
+[![NPM](http://img.shields.io/npm/v/bison-types.svg?style=flat)](https://npmjs.org/package/bison-types)
+[![License](http://img.shields.io/npm/l/bison-types.svg?style=flat)](https://github.com/TabDigital/bison-types)
+
+[![Build Status](http://img.shields.io/travis/TabDigital/bison-types.svg?style=flat)](http://travis-ci.org/TabDigital/bison-types)
+[![Dependencies](http://img.shields.io/david/TabDigital/bison-types.svg?style=flat)](https://david-dm.org/TabDigital/bison-types)
+[![Dev dependencies](http://img.shields.io/david/dev/TabDigital/bison-types.svg?style=flat)](https://david-dm.org/TabDigital/bison-types)
+
 - Are you stuck with integrating with a system that only speaks binary?
 - Are you sick of manually decoding and encoding from json to binary?
 - Do you want an easy way to define your types in javascript?
 
 If you answered yes to any of the above questions, then `bison-types` is for you
-
-[![Build Status](https://travis-ci.org/TabDigital/bison-types.svg?branch=master)](https://travis-ci.org/TabDigital/bison-types)
-[![Dependency Status](https://david-dm.org/TabDigital/bison-types.png?theme=shields.io)](https://david-dm.org/TabDigital/bison-types) 
-[![devDependency Status](https://david-dm.org/TabDigital/bison-types/dev-status.png?theme=shields.io)](https://david-dm.org/TabDigital/bison-types#info=devDependencies)
-
-[![NPM](https://nodei.co/npm/bison-types.svg?downloads=true)](https://nodei.co/npm/bison-types/)
 
 ## How does it work?
 
