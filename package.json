@@ -17,7 +17,7 @@
     "parse"
   ],
   "author": "Tabcorp Digital Technology Team",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/TabDigital/bison-types/issues"
   },
