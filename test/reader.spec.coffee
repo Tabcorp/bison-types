@@ -139,6 +139,15 @@ describe 'Bison Reader', ->
     reader = new Reader buf, types
     reader.read('custom').c.should.eql 4
 
+  it 'should be able to read bytes', ->
+    buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
+    types = preCompile custom: [
+      {a: 'bytes(2)'}
+    ]
+
+    reader = new Reader buf, types
+    reader.read('custom').a.should.eql [ 0x01, 0x02 ]
+
   it 'should be able to define a custom embedded type', ->
     buf = new Buffer [ 0x01, 0x02, 0x03 ]
     types = preCompile

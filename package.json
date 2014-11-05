@@ -24,7 +24,7 @@
   "dependencies": {
     "lodash": "~2.4.1",
     "coffee-script": "^1.7.1",
-    "clever-buffer": "~1.0.0",
+    "clever-buffer": "^1.1.0",
     "big.js": "~2.5.1"
   },
   "devDependencies": {

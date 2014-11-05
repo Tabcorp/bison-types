@@ -42,3 +42,7 @@ module.exports =
   'skip'  :
     _read : (len) -> @buffer.skip len
     _write: (val, len) -> @buffer.skip len
+
+  'bytes' :
+    _read : (length) -> @buffer.getBytes {length}
+    _write: (val, length) -> @buffer.writeBytes val, {length}

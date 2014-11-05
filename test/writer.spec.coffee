@@ -124,6 +124,12 @@ describe 'Bison Writer', ->
     writer.write 'utf-8', 'HELLO'
     writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
 
+  it 'should be able to write bytes', ->
+    buf =  new Buffer 5
+    writer = new Writer buf
+    writer.write 'bytes', [0x48, 0x45, 0x4C, 0x4C, 0x4F]
+    writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F]
+
   it 'should be able to define a simple type', ->
     buf = new Buffer 1
     writer = new Writer buf, preCompile {'my-simple-type': 'uint8'}
