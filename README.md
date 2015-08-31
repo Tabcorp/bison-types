@@ -85,7 +85,7 @@ The following types can be declared as a string, for example: `{timestamp: 'uint
 * `bool`   - boolean (stored as 8 bit integer)
 * `skip`   - will skip specified bytes
 
-The is also an `enumeration` type, which can be used to represent enums from arrays of objects:
+There is also an `enumeration` type, which can be used to represent enums from arrays of objects:
 
 ```coffee
 # will store the index in the array
