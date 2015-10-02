@@ -40,7 +40,9 @@ module.exports =
     _write: (val) -> @buffer.writeUInt8(if val then 1 else 0)
 
   'skip'  :
-    _read : (len) -> @buffer.skip len
+    _read : (len) ->
+      @buffer.skip len
+      return
     _write: (val, len) -> @buffer.skip len
 
   'bytes' :
