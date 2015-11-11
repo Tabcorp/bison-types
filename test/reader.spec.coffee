@@ -137,7 +137,9 @@ describe 'Bison Reader', ->
     ]
 
     reader = new Reader buf, types
-    reader.read('custom').c.should.eql 4
+    res = reader.read('custom')
+    res.c.should.eql 4
+    (typeof res.b).should.eql 'undefined'
 
   it 'should be able to read bytes', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
