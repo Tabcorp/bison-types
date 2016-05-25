@@ -2,6 +2,7 @@ commonTypes = require "#{SRC}/types"
 preCompile  = require "#{SRC}/preCompile"
 
 describe 'PreCompile', ->
+
   it 'should pre compile the common types', ->
     typeSet = preCompile {}
     typeSet.definitions['uint8'].should.eql
@@ -41,7 +42,7 @@ describe 'PreCompile', ->
       isArray: false
       isFunction: true
       isOverride: false
-      parameter: 2
+      parameter: '2'
       arraySize: undefined
       name: 'uint8'
       value: commonTypes['uint8']
@@ -63,7 +64,7 @@ describe 'PreCompile', ->
       isFunction: false
       isOverride: false
       parameter: undefined
-      arraySize: 2
+      arraySize: '2'
       name: 'uint8'
       value: commonTypes['uint8']
       overrideValue: undefined
@@ -87,7 +88,7 @@ describe 'PreCompile', ->
       arraySize: undefined
       name: 'uint8'
       value: commonTypes['uint8']
-      overrideValue: 2
+      overrideValue: '2'
     typeSet.definitions['my-type'].should.eql
       isArray: false
       isFunction: false

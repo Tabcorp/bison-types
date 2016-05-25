@@ -24,15 +24,15 @@
     "url": "https://github.com/TabDigital/bison-types/issues"
   },
   "dependencies": {
-    "big.js": "~2.5.1",
-    "clever-buffer": "^2.0.0",
-    "lodash": "^2.4.1"
+    "big.js": "~3.1.3",
+    "clever-buffer": "^2.0.3",
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
-    "coffee-script": "^1.7.1",
-    "mocha": "~1.20.1",
-    "should": "~4.0.4",
-    "sinon": "~1.10.3",
-    "cli-table": "~0.3.0"
+    "coffee-script": "^1.10.0",
+    "mocha": "~2.5.1",
+    "should": "~8.4.0",
+    "sinon": "~1.17.4",
+    "cli-table": "~0.3.1"
   }
 }
