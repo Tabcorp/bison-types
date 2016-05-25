@@ -135,11 +135,9 @@ describe 'Bison Reader', ->
       {b: 'skip(2)'}
       {c: 'uint8'}
     ]
-
     reader = new Reader buf, types
     res = reader.read('custom')
-    res.c.should.eql 4
-    (typeof res.b).should.eql 'undefined'
+    res.should.eql {a: 1, b: undefined, c: 4}
 
   it 'should be able to read bytes', ->
     buf = new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
@@ -273,3 +271,19 @@ describe 'Bison Reader', ->
     reader = new Reader buf, types
     reader.read('custom').should.eql {a:1, b:2}
     typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql 1
+
+  it 'returns undefined when reading past the buffer length', ->
+    buf = new Buffer [0x01]
+    reader = new Reader buf
+    reader.read('uint8').should.eql(1)
+    should.equal(typeof reader.read('uint8'), 'undefined')
+
+  it 'sets properties to undefined when reading past the buffer length', ->
+    buf = new Buffer [0x01]
+    types = preCompile
+      custom: [
+        {a: 'uint8'}
+        {b: 'uint8'}
+      ]
+    reader = new Reader buf, types
+    reader.read('custom').should.eql {a:1, b: undefined}
