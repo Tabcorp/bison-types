@@ -33,7 +33,7 @@ module.exports =
 
   'utf-8' :
     _read : (length) -> @buffer.getString {length}
-    _write: (val, length) -> @buffer.writeString val, {length}
+    _write: (val) -> @buffer.writeString val
 
   'bool' :
     _read : -> if @buffer.getUInt8() then true else false
