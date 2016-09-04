@@ -224,25 +224,25 @@ describe 'Bison Writer', ->
     writer.write 'custom', { a: 1,  b: 2, c: {d: 3, e: {f:4}} }
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02, 0x03, 0x04 ]
 
-  it 'should be able to write a string', ->
-    buf = new Buffer 10
-    buf.fill 0
-    types = preCompile
-      custom: [
-        a: 'utf-8(5)'
-      ]
+  # it 'should be able to write a string', ->
+  #   buf = new Buffer 10
+  #   buf.fill 0
+  #   types = preCompile
+  #     custom: [
+  #       a: 'utf-8(5)'
+  #     ]
+  #
+  #   writer = new Writer buf, types
+  #   writer.write 'custom', { a: 'HELLOWORLD' }
+  #   # writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00] #Only writes hello
+  #   writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F] #Only writes hello
 
-    writer = new Writer buf, types
-    writer.write 'custom', { a: 'HELLOWORLD' }
-    # writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00] #Only writes hello
-    writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F] #Only writes hello
-
-  it 'should be able to write a string containing multi-byte characters', ->
-    buf = new Buffer 5
-    buf.fill 0
-    writer = new Writer buf
-    writer.write 'utf-8', 'Léon'
-    writer.rawBuffer().should.eql new Buffer [0x4C, 0xC3, 0xA9, 0x6F, 0x6E]
+  # it 'should be able to write a string containing multi-byte characters', ->
+  #   buf = new Buffer 5
+  #   buf.fill 0
+  #   writer = new Writer buf
+  #   writer.write 'utf-8', 'Léon'
+  #   writer.rawBuffer().should.eql new Buffer [0x4C, 0xC3, 0xA9, 0x6F, 0x6E]
 
   it 'should be able to specify a parameter', ->
     buf = new Buffer 2
