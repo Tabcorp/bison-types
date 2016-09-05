@@ -3,7 +3,7 @@ _                       = require 'lodash'
 preCompile              = require './preCompile'
 typeHelper              = require './type-helper'
 
-
+util = require 'util'
 
 class Writer
 
@@ -24,8 +24,12 @@ class Writer
     if not type
       type = @typeSet.definitions[typeName] = typeHelper.getTypeInfo(typeName, @typeSet.types)
 
+    # console.log util.inspect(@typeSet.types, false, 10)
+
     parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
     valueToWrite = typeHelper.getParameterFromResult type.overrideValue, result if type.isOverride
+
+    console.log "#{typeName}: #{valueToWrite}" unless typeName is 'utf-8'
 
     switch (typeof type.value)
       when 'undefined'
