@@ -31,6 +31,21 @@ module.exports =
     _read : -> @buffer.getInt64()
     _write: (val) -> @buffer.writeInt64(val)
 
+  'fixchar':
+    _read : (length, encoding) -> @buffer.getString { length, encoding }
+    _write: (val, encoding) -> @buffer.writeString val, { encoding }
+
+  'varchar':
+    _read : (length, encoding) ->
+      console.log "read varchar"
+      console.log length, encoding
+      @buffer.getString { length, encoding }
+    _write: (val, encoding) -> @buffer.writeString val, { encoding }
+
+  'latin1' :
+    _read : (length) -> @buffer.getString { length: length, encoding: 'binary' }
+    _write: (val) -> @buffer.writeString val, { encoding: 'binary' }
+
   'utf-8' :
     _read : (length) -> @buffer.getString {length}
     _write: (val) -> @buffer.writeString val

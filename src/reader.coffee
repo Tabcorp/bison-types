@@ -20,12 +20,16 @@ class Reader
       res) , {}
 
   read: (typeName, parameter, result={}) ->
+    console.log "Reader.read"
+    console.log typeName, parameter
 
     type = @typeSet.definitions[typeName]
     if not type
       type = @typeSet.definitions[typeName] = typeHelper.getTypeInfo(typeName, @typeSet.types)
 
     parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
+
+    console.log type, parameter
 
     switch (typeof type.value)
       when 'undefined'

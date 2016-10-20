@@ -29,7 +29,7 @@ class Writer
     parameter = typeHelper.getParameterFromResult type.parameter, result if type.isFunction
     valueToWrite = typeHelper.getParameterFromResult type.overrideValue, result if type.isOverride
 
-    console.log "#{typeName}: #{valueToWrite}" unless typeName is 'utf-8'
+    #console.log "#{typeName}: #{valueToWrite}" unless typeName is 'utf-8'
 
     switch (typeof type.value)
       when 'undefined'
