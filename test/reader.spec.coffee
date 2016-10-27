@@ -104,6 +104,11 @@ describe 'Bison Reader', ->
     reader = new Reader buf
     reader.read('utf-8', 5).should.eql 'HELLO'
 
+  it 'should read multi-byte string', ->
+    buf =  new Buffer [0x48, 0xC3, 0x89, 0x4C, 0x4C, 0x4F]
+    reader = new Reader buf
+    reader.read('utf-8', 6).should.eql 'HÉLLO'
+
   it 'should read string with latin1 encoding', ->
     buf =  new Buffer [0x48, 0xC9, 0x4C, 0x4C, 0x4F]
     reader = new Reader buf
