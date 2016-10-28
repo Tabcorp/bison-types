@@ -82,6 +82,7 @@ The following types can be declared as a string, for example: `{timestamp: 'uint
 * `int32`  - signed 32 bit integer
 * `int64`  - signed 64 bit integer
 * `utf-8`  - utf-8 encoded string
+* `latin1` - latin1 encoded string
 * `bool`   - boolean (stored as 8 bit integer)
 * `skip`   - will skip specified bytes
 
@@ -184,6 +185,34 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     myType = reader.read('my-type') # myType = { a: 'HELLO' }
 ```
 
+### Reading a string with latin1 encoding
+```coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer [0x48, 0xC9, 0x4C, 0x4C, 0x4F]
+    types = bison.preCompile
+      my-type: [
+        a: 'latin1(5)'
+      ]
+    options = {bigEndian: false}
+    reader = new bison.Reader buf, types, options
+    myType = reader.read('my-type') # myType = { a: 'HELLO' }
+```
+
+### Reading a multi-byte string
+```coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer [0x48, 0xC3, 0x89, 0x4C, 0x4C, 0x4F]
+    types = bison.preCompile
+      my-type: [
+        a: 'utf-8(6)'
+      ]
+    options = {bigEndian: false}
+    reader = new bison.Reader buf, types, options
+    myType = reader.read('my-type') # myType = { a: 'HÉLLO' }
+```
+
 ### Complex types
 The power of bison-types is evident as you define more complex types
 ```coffee
@@ -281,6 +310,21 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     # buf will equal [0x48, 0x45, 0x4C, 0x4C, 0x4F]
 ```
 
+### Writing a string with latin1 encoding
+```coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 5
+    types = bison.preCompile
+      my-type: [
+        a: 'latin1'
+      ]
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 'HÉLLO' }
+    # buf will equal [0x48, 0xC9, 0x4C, 0x4C, 0x4F]
+```
+
 ### Only writing a certain length of string
 ```coffee
     bison = require 'bison-types'
@@ -294,6 +338,21 @@ You can also pass in options, look at [clever-buffer](https://github.com/TabDigi
     writer = new bison.Writer buf, types, options
     writer.write 'my-type', { a: 'HELLOWORLD' }
     # buf will equal [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00]
+```
+
+### Writing a multi-byte string
+```coffee
+    bison = require 'bison-types'
+
+    buf = new Buffer 6
+    types = bison.preCompile
+      my-type: [
+        a: 'utf-8'
+      ]
+    options = {bigEndian: false}
+    writer = new bison.Writer buf, types, options
+    writer.write 'my-type', { a: 'HÉLLO' }
+    # buf will equal [0x48, 0xC3, 0x89, 0x4C, 0x4C, 0x4F]
 ```
 
 ### Complex types

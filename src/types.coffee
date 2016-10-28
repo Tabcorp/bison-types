@@ -31,6 +31,10 @@ module.exports =
     _read : -> @buffer.getInt64()
     _write: (val) -> @buffer.writeInt64(val)
 
+  'latin1' :
+    _read : (length) -> @buffer.getString { length: length, encoding: 'binary' }
+    _write: (val) -> @buffer.writeString val, { encoding: 'binary' }
+
   'utf-8' :
     _read : (length) -> @buffer.getString {length}
     _write: (val, length) -> @buffer.writeString val, {length}
