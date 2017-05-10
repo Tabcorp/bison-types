@@ -39,7 +39,7 @@ module.exports =
     _read : (length) -> @buffer.getString {length}
     _write: (val, length) ->
       count = @buffer.writeString val, {length}
-      @buffer.skip length - count if count < length
+      count += @buffer.writeUInt8 0x00 while count < length
       length
 
   'bool' :
