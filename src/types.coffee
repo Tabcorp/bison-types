@@ -37,7 +37,10 @@ module.exports =
 
   'utf-8' :
     _read : (length) -> @buffer.getString {length}
-    _write: (val, length) -> @buffer.writeString val, {length}
+    _write: (val, length) ->
+      count = @buffer.writeString val, {length}
+      count += @buffer.writeUInt8 0x00 while count < length
+      length
 
   'bool' :
     _read : -> if @buffer.getUInt8() then true else false

@@ -248,6 +248,19 @@ describe 'Bison Writer', ->
     writer.write 'custom', { a: 'HELLOWORLD' }
     writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00] #Only writes hello
 
+  it 'should be able to write an undersized string of a certain length', ->
+    buf = new Buffer 12
+    buf.fill 0xff
+    types = preCompile
+      custom: [
+        {a: 'utf-8(6)'}
+        {b: 'utf-8(6)'}
+      ]
+
+    writer = new Writer buf, types
+    writer.write 'custom', { a: 'HELLO', b: 'WORLD' }
+    writer.rawBuffer().should.eql new Buffer [0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x57, 0x4F, 0x52, 0x4C, 0x44, 0x00] # pads end with NUL
+
   it 'should be able to specify a parameter', ->
     buf = new Buffer 2
     types = preCompile
