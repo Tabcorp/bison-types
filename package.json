@@ -1,6 +1,6 @@
 {
   "name": "bison-types",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Convert between json and binary",
   "main": "target/index.js",
   "scripts": {
