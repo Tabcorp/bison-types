@@ -383,6 +383,7 @@ describe 'Bison Writer', ->
 
     try
       writer.write('object', {broken_key: 1})
+      done(new Error('should not be called'))
     catch ex
       ex.message.should.eql "'broken_key': my-type isn't a valid type"
       done()
