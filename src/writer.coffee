@@ -16,7 +16,10 @@ class Writer
     return definition._write.apply @, [valueToWrite, parameter] if definition.hasOwnProperty '_write'
     _.each definition, (value) =>
       key = Object.keys(value)[0]
-      @write value[key], valueToWrite[key], parameter, valueToWrite
+      try
+        @write value[key], valueToWrite[key], parameter, valueToWrite
+      catch err
+        throw new Error "'#{key}': #{err.message}"
 
   write: (typeName, valueToWrite, parameter, result={}) ->
 
