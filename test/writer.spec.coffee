@@ -370,3 +370,20 @@ describe 'Bison Writer', ->
     writer.write 'custom', {a: 1, b: 2}
     writer.rawBuffer().should.eql new Buffer [ 0x01, 0x02]
     typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql 1
+
+  it 'throws exceptions for invalid types in objects', (done) ->
+    buf = new Buffer 1
+    buf.fill 0
+    types = preCompile
+      object: [
+        broken_key: 'my-type'
+      ]
+
+    writer = new Writer buf, types
+
+    try
+      writer.write('object', {broken_key: 1})
+      done(new Error('should not be called'))
+    catch ex
+      ex.message.should.eql "'broken_key': my-type isn't a valid type"
+      done()
