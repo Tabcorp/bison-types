@@ -1,18 +1,33 @@
-_    = require 'lodash'
-util = require 'util'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const _    = require('lodash');
+const util = require('util');
 
-module.exports = (type, lookup) ->
+module.exports = function(type, lookup) {
 
-  if util.isArray lookup
-    _read: ->
-      index = @read type
-      lookup[index]
-    _write: (value) ->
-      @write type, lookup.indexOf(value)
+  if (util.isArray(lookup)) {
+    return {
+      _read() {
+        const index = this.read(type);
+        return lookup[index];
+      },
+      _write(value) {
+        return this.write(type, lookup.indexOf(value));
+      }
+    };
 
-  else
-    _read: ->
-      value = @read type
-      _.findKey lookup, (val) -> val == value
-    _write: (key) ->
-      @write type, lookup[key]
+  } else {
+    return {
+      _read() {
+        const value = this.read(type);
+        return _.findKey(lookup, val => val === value);
+      },
+      _write(key) {
+        return this.write(type, lookup[key]);
+      }
+    };
+  }
+};

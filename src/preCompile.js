@@ -1,19 +1,32 @@
-_           = require 'lodash'
-commonTypes = require './types'
-typeHelper  = require './type-helper'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const _           = require('lodash');
+const commonTypes = require('./types');
+const typeHelper  = require('./type-helper');
 
-module.exports = (types) ->
+module.exports = function(types) {
 
-  allTypes = _.extend {}, commonTypes, types
-  types: allTypes
-  definitions: _.reduce(allTypes, (result, val, type) =>
-    getTypeDefinition(type, allTypes, result)
-    result
-  ,{})
+  const allTypes = _.extend({}, commonTypes, types);
+  return {
+    types: allTypes,
+    definitions: _.reduce(allTypes, (result, val, type) => {
+      getTypeDefinition(type, allTypes, result);
+      return result;
+    }
+    ,{})
+  };
+};
 
-getTypeDefinition = (type, allTypes, result) ->
-  result[type] = typeHelper.getTypeInfo(type, allTypes)
-  value = result[type].value
-  if typeof value is 'string'
-    getTypeDefinition(value, allTypes, result)
-  result
+var getTypeDefinition = function(type, allTypes, result) {
+  result[type] = typeHelper.getTypeInfo(type, allTypes);
+  const {
+    value
+  } = result[type];
+  if (typeof value === 'string') {
+    getTypeDefinition(value, allTypes, result);
+  }
+  return result;
+};

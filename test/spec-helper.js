@@ -1,1 +1,1 @@
-global.SRC = "#{__dirname}/../src"
+global.SRC = `${__dirname}/../src`;

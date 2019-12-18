@@ -1,61 +1,78 @@
-should       = require 'should'
-enumeration  = require "#{SRC}/enum"
-preCompile   = require "#{SRC}/preCompile"
-Reader       = require "#{SRC}/reader"
-Writer       = require "#{SRC}/writer"
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const should       = require('should');
+const enumeration  = require(`${SRC}/enum`);
+const preCompile   = require(`${SRC}/preCompile`);
+const Reader       = require(`${SRC}/reader`);
+const Writer       = require(`${SRC}/writer`);
 
-describe 'Bison enum', ->
+describe('Bison enum', function() {
 
-  describe 'arrays', ->
+  describe('arrays', function() {
 
-    levels = [ 'admin', 'reader', 'writer' ]
+    const levels = [ 'admin', 'reader', 'writer' ];
 
-    types = preCompile
-      'level': enumeration('uint8', levels)
+    const types = preCompile({
+      'level': enumeration('uint8', levels),
       'level16': enumeration('uint16', levels)
+    });
 
-    it 'should encode the enum as its index', ->
-      writer = new Writer emptyBuffer(), types
-      writer.write 'level', 'reader'
-      writer.rawBuffer().should.eql new Buffer [ 0x01, 0x00, 0x00, 0x00 ]
+    it('should encode the enum as its index', function() {
+      const writer = new Writer(emptyBuffer(), types);
+      writer.write('level', 'reader');
+      return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x00, 0x00, 0x00 ]));
+  });
 
-    it 'should decode the index as the enum value', ->
-      buf = new Buffer [ 0x02, 0x00, 0x00, 0x00 ]
-      reader = new Reader buf, types
-      reader.read('level').should.eql 'writer'
+    it('should decode the index as the enum value', function() {
+      const buf = new Buffer([ 0x02, 0x00, 0x00, 0x00 ]);
+      const reader = new Reader(buf, types);
+      return reader.read('level').should.eql('writer');
+    });
 
-    it 'can encode to any given type', ->
-      writer = new Writer emptyBuffer(), types, {bigEndian: true}
-      writer.write 'level16', 'reader'
-      writer.rawBuffer().should.eql new Buffer [ 0x00, 0x01, 0x00, 0x00 ]
+    it('can encode to any given type', function() {
+      const writer = new Writer(emptyBuffer(), types, {bigEndian: true});
+      writer.write('level16', 'reader');
+      return writer.rawBuffer().should.eql(new Buffer([ 0x00, 0x01, 0x00, 0x00 ]));
+  });
 
-    it 'can decode from any given type', ->
-      buf = new Buffer [ 0x00, 0x02, 0x00, 0x00 ]
-      reader = new Reader buf, types, {bigEndian: true}
-      reader.read('level16').should.eql 'writer'
+    return it('can decode from any given type', function() {
+      const buf = new Buffer([ 0x00, 0x02, 0x00, 0x00 ]);
+      const reader = new Reader(buf, types, {bigEndian: true});
+      return reader.read('level16').should.eql('writer');
+    });
+  });
 
-  describe 'objects', ->
+  return describe('objects', function() {
 
-    levels =
-      'admin': 0xaa11
-      'reader': 0xbb22
+    const levels = {
+      'admin': 0xaa11,
+      'reader': 0xbb22,
       'writer': 0xcc33
+    };
 
-    types = preCompile
-      'level': enumeration('uint16', levels)
+    const types = preCompile({
+      'level': enumeration('uint16', levels)});
 
-    it 'should encode the enum as the object value', ->
-      writer = new Writer emptyBuffer(), types
-      writer.write 'level', 'reader'
-      writer.rawBuffer().should.eql new Buffer [ 0x22, 0xbb, 0x00, 0x00 ]
+    it('should encode the enum as the object value', function() {
+      const writer = new Writer(emptyBuffer(), types);
+      writer.write('level', 'reader');
+      return writer.rawBuffer().should.eql(new Buffer([ 0x22, 0xbb, 0x00, 0x00 ]));
+  });
 
-    it 'should decode the index as the object key', ->
-      buf = new Buffer [ 0x33, 0xcc, 0x00, 0x00 ]
-      reader = new Reader buf, types
-      reader.read('level').should.eql 'writer'
+    return it('should decode the index as the object key', function() {
+      const buf = new Buffer([ 0x33, 0xcc, 0x00, 0x00 ]);
+      const reader = new Reader(buf, types);
+      return reader.read('level').should.eql('writer');
+    });
+  });
+});
 
 
-emptyBuffer = ->
-  buf = new Buffer 4
-  buf.fill 0
-  buf
+var emptyBuffer = function() {
+  const buf = new Buffer(4);
+  buf.fill(0);
+  return buf;
+};
