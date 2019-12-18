@@ -1,16 +1,9 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const typeHelper = require(`${SRC}/type-helper`);
 
 describe('GetTypeInfo', () => {
   it('should correctly parse a normal type', () => {
     const type = typeHelper.getTypeInfo('my-type', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,
@@ -24,7 +17,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse a function type with an integer parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(3)', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: false,
       isFunction: true,
       isOverride: false,
@@ -38,7 +31,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse a function type with an variable parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(another-value)', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: false,
       isFunction: true,
       isOverride: false,
@@ -52,7 +45,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse a array type with an integer parameter', () => {
     const type = typeHelper.getTypeInfo('my-type[3]', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: true,
       isFunction: false,
       isOverride: false,
@@ -66,7 +59,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse a array type with an variable parameter', () => {
     const type = typeHelper.getTypeInfo('my-type[another-value]', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: true,
       isFunction: false,
       isOverride: false,
@@ -80,7 +73,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse an override value', () => {
     const type = typeHelper.getTypeInfo('my-type=4', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: false,
       isFunction: false,
       isOverride: true,
@@ -94,7 +87,7 @@ describe('GetTypeInfo', () => {
 
   it('should correctly parse an override value and parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(5)=4', {'my-type': 'uint8'});
-    return type.should.eql({
+    type.should.eql({
       isArray: false,
       isFunction: true,
       isOverride: true,
@@ -106,7 +99,7 @@ describe('GetTypeInfo', () => {
     });
   });
 
-  return it('should throw error if the type is invalid', () => ((() => typeHelper.getTypeInfo('a^')))
+  it('should throw error if the type is invalid', () => ((() => typeHelper.getTypeInfo('a^')))
   .should.throwError("a^ is not a valid type"));
 });
 
@@ -121,7 +114,7 @@ describe('GetParameterFromResult', () => {
 
   it('should correctly get a length of an array', () => typeHelper.getParameterFromResult('a.length', {a: [1,2,3]}).should.equal(3));
 
-  return it('should throw error if the parameter is invalid', () => ((() => typeHelper.getParameterFromResult('a', {})))
+  it('should throw error if the parameter is invalid', () => ((() => typeHelper.getParameterFromResult('a', {})))
   .should.throwError("a is not a valid parameter"));
 });
 

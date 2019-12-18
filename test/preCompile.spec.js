@@ -1,10 +1,3 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const commonTypes = require(`${SRC}/types`);
 const preCompile  = require(`${SRC}/preCompile`);
 
@@ -12,7 +5,7 @@ describe('PreCompile', () => {
 
   it('should pre compile the common types', () => {
     const typeSet = preCompile({});
-    return typeSet.definitions['uint8'].should.eql({
+    typeSet.definitions['uint8'].should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,
@@ -36,7 +29,7 @@ describe('PreCompile', () => {
       value: commonTypes['uint8'],
       overrideValue: undefined,
     });
-    return typeSet.definitions['my-type'].should.eql({
+    typeSet.definitions['my-type'].should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,
@@ -60,7 +53,7 @@ describe('PreCompile', () => {
       value: commonTypes['uint8'],
       overrideValue: undefined,
     });
-    return typeSet.definitions['my-type'].should.eql({
+    typeSet.definitions['my-type'].should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,
@@ -84,7 +77,7 @@ describe('PreCompile', () => {
       value: commonTypes['uint8'],
       overrideValue: undefined,
     });
-    return typeSet.definitions['my-type'].should.eql({
+    typeSet.definitions['my-type'].should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,
@@ -96,7 +89,7 @@ describe('PreCompile', () => {
     });
   });
 
-  return it('should pre compile any passed in override types', () => {
+  it('should pre compile any passed in override types', () => {
     const typeSet = preCompile({'my-type': 'uint8=2'});
     typeSet.definitions['uint8=2'].should.eql({
       isArray: false,
@@ -108,7 +101,7 @@ describe('PreCompile', () => {
       value: commonTypes['uint8'],
       overrideValue: '2',
     });
-    return typeSet.definitions['my-type'].should.eql({
+    typeSet.definitions['my-type'].should.eql({
       isArray: false,
       isFunction: false,
       isOverride: false,

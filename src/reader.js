@@ -1,17 +1,7 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const _                       = require('lodash');
 const { CleverBufferReader }  = require('clever-buffer');
 const preCompile              = require('./preCompile');
 const typeHelper              = require('./type-helper');
-
-
 
 class Reader {
 
@@ -56,7 +46,7 @@ class Reader {
         return type.value.apply(this, [localParameter]);
       case 'object':
         if (type.isArray) {
-          return _.map(__range__(0, Math.floor(typeHelper.getParameterFromResult(type.arraySize, localResult)), false), () => {
+          return _.map(_.range(0, Math.floor(typeHelper.getParameterFromResult(type.arraySize, localResult)), false), () => {
             return this.processObject(type.value, localParameter);
           });
         } else {
@@ -67,12 +57,3 @@ class Reader {
 }
 
 module.exports = Reader;
-function __range__(left, right, inclusive) {
-  let range = [];
-  let ascending = left < right;
-  let end = !inclusive ? right : ascending ? right + 1 : right - 1;
-  for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
-    range.push(i);
-  }
-  return range;
-}

@@ -1,10 +1,3 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const should     = require('should');
 const sinon      = require('sinon');
 const preCompile = require(`${SRC}/preCompile`);
@@ -22,109 +15,109 @@ describe('Bison Writer', function() {
     const writer = new Writer(buf);
     writer.buffer.bigEndian.should.eql(false);
     writer.buffer.getOffset().should.eql(0);
-    return writer.buffer.noAssert.should.eql(true);
+    writer.buffer.noAssert.should.eql(true);
   });
 
   it('should create a writer with a specified offset', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf, null, {offset:4});
-    return writer.buffer.getOffset().should.eql(4);
+    writer.buffer.getOffset().should.eql(4);
   });
 
   it('should create a writer with a specified endian-ness', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf, null, {bigEndian:true});
-    return writer.buffer.bigEndian.should.eql(true);
+    writer.buffer.bigEndian.should.eql(true);
   });
 
   it('should create a writer with a specified value for noAssert', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf, null, {noAssert:false});
-    return writer.buffer.noAssert.should.eql(false);
+    writer.buffer.noAssert.should.eql(false);
   });
 
   it('should write a UInt8', () => {
     const buf = new Buffer(1);
     const writer = new Writer(buf);
     writer.write('uint8', 5);
-    return writer.rawBuffer().should.eql(new Buffer([ 0x05 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x05 ]));
 });
 
   it('should write a UInt16', () => {
     const buf = new Buffer(2);
     const writer = new Writer(buf);
     writer.write('uint16', 513);
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02 ]));
 });
 
   it('should write a UInt32', () => {
     const buf = new Buffer(4);
     const writer = new Writer(buf);
     writer.write('uint32', 67305985);
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
 });
 
   it('should write a UInt64', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf);
     writer.write('uint64', '578437695752307201');
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 ]));
 });
 
   it('should write max UInt8', () => {
     const buf = new Buffer(1);
     const writer = new Writer(buf);
     writer.write('uint8', 255);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF]));
 });
 
   it('should write max UInt16', () => {
     const buf = new Buffer(2);
     const writer = new Writer(buf);
     writer.write('uint16', 65535);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF]));
 });
 
   it('should write max UInt32', () => {
     const buf = new Buffer(4);
     const writer = new Writer(buf);
     writer.write('uint32', 4294967295);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF, 0xFF, 0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF, 0xFF, 0xFF]));
 });
 
   it('should write max UInt64', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf);
     writer.write('uint64', '18446744073709551615');
-    return writer.rawBuffer().should.eql(new Buffer([ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]));
 });
 
   it('should write Int8', () => {
     const buf = new Buffer(1);
     const writer = new Writer(buf);
     writer.write('int8', -1);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF]));
 });
 
   it('should write Int16', () => {
     const buf = new Buffer(2);
     const writer = new Writer(buf);
     writer.write('uint16', -1);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF]));
 });
 
   it('should write Int32', () => {
     const buf = new Buffer(4);
     const writer = new Writer(buf);
     writer.write('uint32', -1);
-    return writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF, 0xFF, 0xFF]));
+    writer.rawBuffer().should.eql(new Buffer([0xFF, 0xFF, 0xFF, 0xFF]));
 });
 
   it('should write Int64', () => {
     const buf = new Buffer(8);
     const writer = new Writer(buf);
     writer.write('uint64', '-1');
-    return writer.rawBuffer().should.eql(new Buffer([ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]));
 });
 
   it('should write Bool', () => {
@@ -137,42 +130,42 @@ describe('Bison Writer', function() {
     writer.write('bool', true);
     writer.write('bool', 1);
     writer.write('bool', 'hi');
-    return writer.rawBuffer().should.eql(new Buffer([ 0x00, 0x00, 0x01, 0x01, 0x01 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x00, 0x00, 0x01, 0x01, 0x01 ]));
 });
 
   it('should write string', () => {
     const buf =  new Buffer(5);
     const writer = new Writer(buf);
     writer.write('utf-8', 'HELLO');
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F]));
 });
 
   it('should write multi-byte string', () => {
     const buf =  new Buffer(6);
     const writer = new Writer(buf);
     writer.write('utf-8', 'HÉLLO');
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0xC3, 0x89, 0x4C, 0x4C, 0x4F]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0xC3, 0x89, 0x4C, 0x4C, 0x4F]));
 });
 
   it('should write string with latin1 encoding', () => {
     const buf =  new Buffer(5);
     const writer = new Writer(buf);
     writer.write('latin1', 'HÉLLO');
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0xC9, 0x4C, 0x4C, 0x4F]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0xC9, 0x4C, 0x4C, 0x4F]));
 });
 
   it('should be able to write bytes', () => {
     const buf =  new Buffer(5);
     const writer = new Writer(buf);
     writer.write('bytes', [0x48, 0x45, 0x4C, 0x4C, 0x4F]);
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F]));
 });
 
   it('should be able to define a simple type', () => {
     const buf = new Buffer(1);
     const writer = new Writer(buf, preCompile({'my-simple-type': 'uint8'}));
     writer.write('my-simple-type', 5);
-    return writer.rawBuffer().should.eql(new Buffer([0x05]));
+    writer.rawBuffer().should.eql(new Buffer([0x05]));
 });
 
   it('should be able to define a complex type', function() {
@@ -184,7 +177,7 @@ describe('Bison Writer', function() {
     });
     const writer = new Writer(buf, types);
     writer.write('complex', 1, 5);
-    return writer.rawBuffer().should.eql(new Buffer([0x05]));
+    writer.rawBuffer().should.eql(new Buffer([0x05]));
 });
 
   it('should be able to define a custom type', () => {
@@ -199,7 +192,7 @@ describe('Bison Writer', function() {
     });
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 1,  b: 2, c: 3, d: 4 });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
 });
 
   it('should be able to skip', () => {
@@ -214,7 +207,7 @@ describe('Bison Writer', function() {
     });
     const writer = new Writer(buf, types);
     writer.write('custom', {a: 1, c: 4});
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x00, 0x00, 0x04 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x00, 0x00, 0x04 ]));
 });
 
   it('should be able to define a custom embedded type', () => {
@@ -233,7 +226,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 1,  b: 2, c: {d: 3} });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03 ]));
 });
 
   it('should be able to define a custom complex embedded type', () => {
@@ -253,7 +246,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 1,  b: 2, c: {d: 3, e:4} });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
 });
 
   it('should be able to define a custom complex embedded type within an embedded type', () => {
@@ -277,7 +270,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 1,  b: 2, c: {d: 3, e: {f:4}} });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x04 ]));
 });
 
   it('should be able to write a string of a certain length', () => {
@@ -291,7 +284,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 'HELLOWORLD' });
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x00, 0x00, 0x00, 0x00]));
 }); //Only writes hello
 
   it('should be able to write an undersized string of a certain length', () => {
@@ -306,7 +299,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 'HELLO', b: 'WORLD' });
-    return writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x57, 0x4F, 0x52, 0x4C, 0x44, 0x00, 0x00, 0xff]));
+    writer.rawBuffer().should.eql(new Buffer([0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x00, 0x57, 0x4F, 0x52, 0x4C, 0x44, 0x00, 0x00, 0xff]));
 }); // pads end with NUL
 
   it('should be able to specify a parameter', function() {
@@ -324,7 +317,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 2,  b: 12 });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x02, 0x03 ]));
 });
 
   it('should be able to use previously resolved value', function() {
@@ -342,7 +335,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', { a: 2,  b: 6 });
-    return writer.rawBuffer().should.eql(new Buffer([ 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x02, 0x03 ]));
 });
 
   it('should be able to write an array', () => {
@@ -371,7 +364,7 @@ describe('Bison Writer', function() {
         ],
       },
     );
-    return writer.rawBuffer().should.eql(new Buffer([ 0x03, 0x01, 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x03, 0x01, 0x02, 0x03 ]));
 });
 
   it('should only write specified amount in array', () => {
@@ -399,14 +392,14 @@ describe('Bison Writer', function() {
         ],
       },
     );
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x00, 0x00 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03, 0x00, 0x00 ]));
 }); //Doesn't write last 2 values
 
   it('should write a UInt8 with an override value', () => {
     const buf = new Buffer(1);
     const writer = new Writer(buf);
     writer.write('uint8=3', 5);
-    return writer.rawBuffer().should.eql(new Buffer([ 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x03 ]));
 });
 
   it('should be able to write an array of type that is defined with _write function', () => {
@@ -414,7 +407,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf);
     writer.write('uint8[3]', [1,2,3]);
-    return writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02, 0x03 ]));
 });
 
   it('should be able to write array and size', () => {
@@ -429,7 +422,7 @@ describe('Bison Writer', function() {
 
     const writer = new Writer(buf, types);
     writer.write('custom', {b: [1,2,3]});
-    return writer.rawBuffer().should.eql(new Buffer([ 0x03, 0x01, 0x02, 0x03 ]));
+    writer.rawBuffer().should.eql(new Buffer([ 0x03, 0x01, 0x02, 0x03 ]));
 });
 
   it('should only create type definition once per type', () => {
@@ -445,10 +438,10 @@ describe('Bison Writer', function() {
     const writer = new Writer(buf, types);
     writer.write('custom', {a: 1, b: 2});
     writer.rawBuffer().should.eql(new Buffer([ 0x01, 0x02]));
-    return typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql(1);
+    typeHelper.getTypeInfo.withArgs('uint8').callCount.should.eql(1);
   });
 
-  return it('throws exceptions for invalid types in objects', done => {
+  it('throws exceptions for invalid types in objects', done => {
     const buf = new Buffer(1);
     buf.fill(0);
     const types = preCompile({
@@ -461,10 +454,10 @@ describe('Bison Writer', function() {
 
     try {
       writer.write('object', {broken_key: 1});
-      return done(new Error('should not be called'));
+      done(new Error('should not be called'));
     } catch (ex) {
       ex.message.should.eql("'broken_key': my-type isn't a valid type");
-      return done();
+      done();
     }
   });
 });
