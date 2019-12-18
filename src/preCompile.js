@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -12,15 +14,16 @@ module.exports = function(types) {
   const allTypes = _.extend({}, commonTypes, types);
   return {
     types: allTypes,
+
     definitions: _.reduce(allTypes, (result, val, type) => {
       getTypeDefinition(type, allTypes, result);
       return result;
     }
-    ,{})
+    ,{}),
   };
 };
 
-var getTypeDefinition = function(type, allTypes, result) {
+const getTypeDefinition = function(type, allTypes, result) {
   result[type] = typeHelper.getTypeInfo(type, allTypes);
   const {
     value

@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -25,7 +27,7 @@ exports.getTypeInfo = function(typeName, types) {
       arraySize: result[6],
       name: result[1],
       value: types[result[1]],
-      overrideValue: result[8]
+      overrideValue: result[8],
     };
   }
 };

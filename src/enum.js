@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -14,9 +16,10 @@ module.exports = function(type, lookup) {
         const index = this.read(type);
         return lookup[index];
       },
+
       _write(value) {
         return this.write(type, lookup.indexOf(value));
-      }
+      },
     };
 
   } else {
@@ -25,9 +28,10 @@ module.exports = function(type, lookup) {
         const value = this.read(type);
         return _.findKey(lookup, val => val === value);
       },
+
       _write(key) {
         return this.write(type, lookup[key]);
-      }
+      },
     };
   }
 };

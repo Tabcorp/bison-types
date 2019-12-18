@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -5,8 +7,8 @@
  */
 const typeHelper = require(`${SRC}/type-helper`);
 
-describe('GetTypeInfo', function() {
-  it('should correctly parse a normal type', function() {
+describe('GetTypeInfo', () => {
+  it('should correctly parse a normal type', () => {
     const type = typeHelper.getTypeInfo('my-type', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: false,
@@ -16,11 +18,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should correctly parse a function type with an integer parameter', function() {
+  it('should correctly parse a function type with an integer parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(3)', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: false,
@@ -30,11 +32,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: '3',
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should correctly parse a function type with an variable parameter', function() {
+  it('should correctly parse a function type with an variable parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(another-value)', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: false,
@@ -44,11 +46,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: 'another-value',
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should correctly parse a array type with an integer parameter', function() {
+  it('should correctly parse a array type with an integer parameter', () => {
     const type = typeHelper.getTypeInfo('my-type[3]', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: true,
@@ -58,11 +60,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: undefined,
       arraySize: '3',
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should correctly parse a array type with an variable parameter', function() {
+  it('should correctly parse a array type with an variable parameter', () => {
     const type = typeHelper.getTypeInfo('my-type[another-value]', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: true,
@@ -72,11 +74,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: undefined,
       arraySize: 'another-value',
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should correctly parse an override value', function() {
+  it('should correctly parse an override value', () => {
     const type = typeHelper.getTypeInfo('my-type=4', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: false,
@@ -86,11 +88,11 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: '4'
+      overrideValue: '4',
     });
   });
 
-  it('should correctly parse an override value and parameter', function() {
+  it('should correctly parse an override value and parameter', () => {
     const type = typeHelper.getTypeInfo('my-type(5)=4', {'my-type': 'uint8'});
     return type.should.eql({
       isArray: false,
@@ -100,7 +102,7 @@ describe('GetTypeInfo', function() {
       value: 'uint8',
       parameter: '5',
       arraySize: undefined,
-      overrideValue: '4'
+      overrideValue: '4',
     });
   });
 
@@ -108,7 +110,7 @@ describe('GetTypeInfo', function() {
   .should.throwError("a^ is not a valid type"));
 });
 
-describe('GetParameterFromResult', function() {
+describe('GetParameterFromResult', () => {
   it('should correctly get an integer parameter', () => typeHelper.getParameterFromResult('4').should.equal(4));
 
   it('should get a fixed point parameter', () => typeHelper.getParameterFromResult('5.6').should.equal(5.6));

@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -6,9 +8,9 @@
 const commonTypes = require(`${SRC}/types`);
 const preCompile  = require(`${SRC}/preCompile`);
 
-describe('PreCompile', function() {
+describe('PreCompile', () => {
 
-  it('should pre compile the common types', function() {
+  it('should pre compile the common types', () => {
     const typeSet = preCompile({});
     return typeSet.definitions['uint8'].should.eql({
       isArray: false,
@@ -18,11 +20,11 @@ describe('PreCompile', function() {
       arraySize: undefined,
       name: 'uint8',
       value: commonTypes['uint8'],
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should pre compile any passed in types', function() {
+  it('should pre compile any passed in types', () => {
     const typeSet = preCompile({'my-type': 'uint8'});
     typeSet.definitions['uint8'].should.eql({
       isArray: false,
@@ -32,7 +34,7 @@ describe('PreCompile', function() {
       arraySize: undefined,
       name: 'uint8',
       value: commonTypes['uint8'],
-      overrideValue: undefined
+      overrideValue: undefined,
     });
     return typeSet.definitions['my-type'].should.eql({
       isArray: false,
@@ -42,11 +44,11 @@ describe('PreCompile', function() {
       value: 'uint8',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should pre compile any passed in function types', function() {
+  it('should pre compile any passed in function types', () => {
     const typeSet = preCompile({'my-type': 'uint8(2)'});
     typeSet.definitions['uint8(2)'].should.eql({
       isArray: false,
@@ -56,7 +58,7 @@ describe('PreCompile', function() {
       arraySize: undefined,
       name: 'uint8',
       value: commonTypes['uint8'],
-      overrideValue: undefined
+      overrideValue: undefined,
     });
     return typeSet.definitions['my-type'].should.eql({
       isArray: false,
@@ -66,11 +68,11 @@ describe('PreCompile', function() {
       value: 'uint8(2)',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  it('should pre compile any passed in array types', function() {
+  it('should pre compile any passed in array types', () => {
     const typeSet = preCompile({'my-type': 'uint8[2]'});
     typeSet.definitions['uint8[2]'].should.eql({
       isArray: true,
@@ -80,7 +82,7 @@ describe('PreCompile', function() {
       arraySize: '2',
       name: 'uint8',
       value: commonTypes['uint8'],
-      overrideValue: undefined
+      overrideValue: undefined,
     });
     return typeSet.definitions['my-type'].should.eql({
       isArray: false,
@@ -90,11 +92,11 @@ describe('PreCompile', function() {
       value: 'uint8[2]',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 
-  return it('should pre compile any passed in override types', function() {
+  return it('should pre compile any passed in override types', () => {
     const typeSet = preCompile({'my-type': 'uint8=2'});
     typeSet.definitions['uint8=2'].should.eql({
       isArray: false,
@@ -104,7 +106,7 @@ describe('PreCompile', function() {
       arraySize: undefined,
       name: 'uint8',
       value: commonTypes['uint8'],
-      overrideValue: '2'
+      overrideValue: '2',
     });
     return typeSet.definitions['my-type'].should.eql({
       isArray: false,
@@ -114,7 +116,7 @@ describe('PreCompile', function() {
       value: 'uint8=2',
       parameter: undefined,
       arraySize: undefined,
-      overrideValue: undefined
+      overrideValue: undefined,
     });
   });
 });

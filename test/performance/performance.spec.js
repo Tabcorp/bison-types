@@ -1,3 +1,5 @@
+// TODO: This file was created by bulk-decaffeinate.
+// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -11,17 +13,18 @@ const types       = require('./performance-types');
 const Writer      = require(`${SRC}/writer`);
 const Reader      = require(`${SRC}/reader`);
 
-describe('Performance', () => it('prints performance figures', function() {
+describe('Performance', () => it('prints performance figures', () => {
   const table = new Table({
     head: ['Operation', 'time (ms)'],
-    colWidths: [20, 20]});
+    colWidths: [20, 20],
+  });
   read(10000, table);
   write(10000, table);
   console.log('');
   return console.log(table.toString());
 }));
 
-var write = function(count, table) {
+const write = function(count, table) {
   const json = jsonMessage();
   const buf = new Buffer(64);
   buf.fill(0);
@@ -34,7 +37,7 @@ var write = function(count, table) {
   return table.push([`Write ${count}`, end-start]);
 };
 
-var read = function(count, table) {
+const read = function(count, table) {
   const binary = binaryMessage();
   const start = new Date();
   for (let i = 0, end1 = count, asc = 0 <= end1; asc ? i < end1 : i > end1; asc ? i++ : i--) {
@@ -46,7 +49,7 @@ var read = function(count, table) {
 };
 
 
-var jsonMessage =  function() {
+const jsonMessage =  function() {
   let json;
   return json = {
     a: 123,
@@ -55,25 +58,86 @@ var jsonMessage =  function() {
     d: '4294967366',
     e: "hello world",
     arraySize: 1,
+
     array: [{
       f: "hello",
       g: 2,
       h: 3,
+
       i: {
         j: 123,
         k: 456789,
         l: 123456789,
         m: '4294967366',
-        n: 1
-      }
-    }
-    ]
+        n: 1,
+      },
+    }],
   };
 };
 
-var binaryMessage =  () => new Buffer([
-  0x7b,0x39,0x30,0x40,0xe2,0x01,0x00,0x46,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x0b,
-  0x68,0x65,0x6c,0x6c,0x6f,0x20,0x77,0x6f,0x72,0x6c,0x64,0x01,0x68,0x65,0x6c,0x6c,
-  0x6f,0x02,0x03,0x7b,0x55,0xf8,0x15,0xcd,0x5b,0x07,0x46,0x00,0x00,0x00,0x01,0x00,
-  0x00,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+const binaryMessage =  () => new Buffer([
+  0x7b,
+  0x39,
+  0x30,
+  0x40,
+  0xe2,
+  0x01,
+  0x00,
+  0x46,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x00,
+  0x00,
+  0x00,
+  0x0b,
+  0x68,
+  0x65,
+  0x6c,
+  0x6c,
+  0x6f,
+  0x20,
+  0x77,
+  0x6f,
+  0x72,
+  0x6c,
+  0x64,
+  0x01,
+  0x68,
+  0x65,
+  0x6c,
+  0x6c,
+  0x6f,
+  0x02,
+  0x03,
+  0x7b,
+  0x55,
+  0xf8,
+  0x15,
+  0xcd,
+  0x5b,
+  0x07,
+  0x46,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
 ]);
