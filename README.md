@@ -7,7 +7,7 @@
 
 [![Build Status](http://img.shields.io/travis/TabDigital/bison-types.svg?style=flat)](http://travis-ci.org/TabDigital/bison-types)
 [![Dependencies](http://img.shields.io/david/TabDigital/bison-types.svg?style=flat)](https://david-dm.org/TabDigital/bison-types)
-[![Dev dependencies](http://img.shields.io/david/dev/TabDigital/bison-types.svg?style=flat)](https://david-dm.org/TabDigital/bison-types)
+[![Dev dependencies](http://img.shields.io/david/dev/TabDigital/bison-types.svg?style=flat)](https://david-dm.org/TabDigital/bison-types) [![Greenkeeper badge](https://badges.greenkeeper.io/Tabcorp/bison-types.svg)](https://greenkeeper.io/)
 
 - Are you stuck with integrating with a system that only speaks binary?
 - Are you sick of manually decoding and encoding from json to binary?
