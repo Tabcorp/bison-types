@@ -1,8 +1,7 @@
-const _    = require('lodash');
+const _ = require('lodash');
 const util = require('util');
 
-module.exports = function(type, lookup) {
-
+module.exports = (type, lookup) => {
   if (util.isArray(lookup)) {
     return {
       _read() {
@@ -14,17 +13,15 @@ module.exports = function(type, lookup) {
         return this.write(type, lookup.indexOf(value));
       },
     };
-
-  } else {
-    return {
-      _read() {
-        const value = this.read(type);
-        return _.findKey(lookup, val => val === value);
-      },
-
-      _write(key) {
-        return this.write(type, lookup[key]);
-      },
-    };
   }
+  return {
+    _read() {
+      const value = this.read(type);
+      return _.findKey(lookup, (val) => val === value);
+    },
+
+    _write(key) {
+      return this.write(type, lookup[key]);
+    },
+  };
 };

@@ -1,12 +1,13 @@
-const exp = new RegExp(`\
+/* eslint-disable no-multi-str */
+const exp = new RegExp('\
 ^\
 ([a-z0-9_-]+)\
 ((\\(([a-z0-9._-]*)\\)+)|(\\[([a-z0-9._-]*)\\]+))?\
 (\\=([a-z0-9._-]*))?\
 $\
-`, 'i');
+', 'i');
 
-exports.getTypeInfo = function(typeName, types) {
+exports.getTypeInfo = (typeName, types) => {
   const result = typeName.match(exp);
   if (!result) {
     throw new Error(`${typeName} is not a valid type`);
@@ -24,18 +25,17 @@ exports.getTypeInfo = function(typeName, types) {
   }
 };
 
-exports.isNumber = number => !isNaN(number);
+exports.isNumber = (number) => !Number.isNaN(Number(number));
 
-exports.getParameterFromResult = function(value, result) {
+exports.getParameterFromResult = (value, result) => {
   if (exports.isNumber(value)) {
     return Number(value);
-  } else if ((typeof value === 'string') && (value.indexOf('.length') !== -1)) {
+  } if ((typeof value === 'string') && (value.indexOf('.length') !== -1)) {
     const split = value.split('.length');
     if (result[split[0]] != null) {
       return result[split[0]].length;
-    } else {
-      throw new Error(`${value} is not a valid parameter`);
     }
+    throw new Error(`${value} is not a valid parameter`);
   } else if (result[value] != null) {
     return result[value];
   } else {

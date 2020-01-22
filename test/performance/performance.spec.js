@@ -1,81 +1,36 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS202: Simplify dynamic range loops
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-const should      = require('should');
-const util        = require('util');
-const Table       = require('cli-table');
-const types       = require('./performance-types');
-const Writer      = require(`${SRC}/writer`);
-const Reader      = require(`${SRC}/reader`);
+/* eslint-disable no-plusplus */
+/* eslint-disable no-console */
+should = require('should');
+const Table = require('cli-table');
 
-describe('Performance', () => it('prints performance figures', () => {
-  const table = new Table({
-    head: ['Operation', 'time (ms)'],
-    colWidths: [20, 20],
-  });
-  read(10000, table);
-  write(10000, table);
-  console.log('');
-  return console.log(table.toString());
-}));
+const types = require('./performance-types');
 
-const write = function(count, table) {
-  const json = jsonMessage();
-  const buf = new Buffer(64);
-  buf.fill(0);
-  const start = new Date();
-  for (let i = 0, end1 = count, asc = 0 <= end1; asc ? i < end1 : i > end1; asc ? i++ : i--) {
-    const writer = new Writer(buf, types);
-    writer.write('complex-type', json);
-  }
-  const end = new Date();
-  return table.push([`Write ${count}`, end-start]);
-};
+const Writer = require(`${SRC}/writer`);
+const Reader = require(`${SRC}/reader`);
 
-const read = function(count, table) {
-  const binary = binaryMessage();
-  const start = new Date();
-  for (let i = 0, end1 = count, asc = 0 <= end1; asc ? i < end1 : i > end1; asc ? i++ : i--) {
-    const reader = new Reader(binary, types);
-    const json = reader.read('complex-type');
-  }
-  const end = new Date();
-  return table.push([`Read ${count}`, end-start]);
-};
+const jsonMessage = () => ({
+  a: 123,
+  b: 12345,
+  c: 123456,
+  d: '4294967366',
+  e: 'hello world',
+  arraySize: 1,
+  array: [{
+    f: 'hello',
+    g: 2,
+    h: 3,
 
+    i: {
+      j: 123,
+      k: 65535,
+      l: 123456789,
+      m: '4294967366',
+      n: 1,
+    },
+  }],
+});
 
-const jsonMessage =  function() {
-  let json;
-  return json = {
-    a: 123,
-    b: 12345,
-    c: 123456,
-    d: '4294967366',
-    e: "hello world",
-    arraySize: 1,
-
-    array: [{
-      f: "hello",
-      g: 2,
-      h: 3,
-
-      i: {
-        j: 123,
-        k: 456789,
-        l: 123456789,
-        m: '4294967366',
-        n: 1,
-      },
-    }],
-  };
-};
-
-const binaryMessage =  () => new Buffer([
+const binaryMessage = () => Buffer.from([
   0x7b,
   0x39,
   0x30,
@@ -141,3 +96,38 @@ const binaryMessage =  () => new Buffer([
   0x00,
   0x00,
 ]);
+
+const write = (count, table) => {
+  const json = jsonMessage();
+  const buf = Buffer.alloc(64);
+  buf.fill(0);
+  const start = new Date();
+  for (let i = 0, end1 = count, asc = end1 >= 0; asc ? i < end1 : i > end1; asc ? i++ : i--) {
+    const writer = new Writer(buf, types);
+    writer.write('complex-type', json);
+  }
+  const end = new Date();
+  return table.push([`Write ${count}`, end - start]);
+};
+
+const read = (count, table) => {
+  const binary = binaryMessage();
+  const start = new Date();
+  for (let i = 0, end1 = count, asc = end1 >= 0; asc ? i < end1 : i > end1; asc ? i++ : i--) {
+    const reader = new Reader(binary, types);
+    reader.read('complex-type');
+  }
+  const end = new Date();
+  return table.push([`Read ${count}`, end - start]);
+};
+
+describe('Performance', () => it('prints performance figures', () => {
+  const table = new Table({
+    head: ['Operation', 'time (ms)'],
+    colWidths: [20, 20],
+  });
+  read(10000, table);
+  write(10000, table);
+  console.log('');
+  console.log(table.toString());
+}));

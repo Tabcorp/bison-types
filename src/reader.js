@@ -1,10 +1,12 @@
-const _                       = require('lodash');
-const { CleverBufferReader }  = require('clever-buffer');
-const preCompile              = require('./preCompile');
-const typeHelper              = require('./type-helper');
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-prototype-builtins */
+const _ = require('lodash');
+const { CleverBufferReader } = require('clever-buffer');
+
+const preCompile = require('./preCompile');
+const typeHelper = require('./type-helper');
 
 class Reader {
-
   constructor(buffer, typeSet, options) {
     let localOptions = options;
     this.processObject = this.processObject.bind(this);
@@ -22,7 +24,7 @@ class Reader {
       const key = Object.keys(value)[0];
       res[key] = this.read(value[key], parameter, res);
       return res;
-    }) , {});
+    }), {});
   }
 
   read(typeName, parameter, result) {
@@ -46,12 +48,10 @@ class Reader {
         return type.value.apply(this, [localParameter]);
       case 'object':
         if (type.isArray) {
-          return _.map(_.range(0, Math.floor(typeHelper.getParameterFromResult(type.arraySize, localResult)), false), () => {
-            return this.processObject(type.value, localParameter);
-          });
-        } else {
-          return this.processObject(type.value, localParameter);
+          return _.map(_.range(0, Math.floor(typeHelper.getParameterFromResult(type.arraySize, localResult)), false), () => this.processObject(type.value, localParameter));
         }
+        return this.processObject(type.value, localParameter);
+      default:
     }
   }
 }

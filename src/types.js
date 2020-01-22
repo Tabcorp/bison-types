@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 module.exports = {
   uint8: {
     _read() { return this.buffer.getUInt8(); },
@@ -45,10 +46,10 @@ module.exports = {
   },
 
   'utf-8': {
-    _read(length) { return this.buffer.getString({length}); },
+    _read(length) { return this.buffer.getString({ length }); },
 
     _write(val, length) {
-      let count = this.buffer.writeString(val, {length});
+      let count = this.buffer.writeString(val, { length });
       while (count < length) {
         this.buffer.writeUInt8(0x00);
         count++;
@@ -58,7 +59,7 @@ module.exports = {
   },
 
   bool: {
-    _read() { if (this.buffer.getUInt8()) { return true; } else { return false; } },
+    _read() { if (this.buffer.getUInt8()) { return true; } return false; },
     _write(val) { return this.buffer.writeUInt8(val ? 1 : 0); },
   },
 
@@ -68,7 +69,7 @@ module.exports = {
   },
 
   bytes: {
-    _read(length) { return this.buffer.getBytes({length}); },
-    _write(val, length) { return this.buffer.writeBytes(val, {length}); },
+    _read(length) { return this.buffer.getBytes({ length }); },
+    _write(val, length) { return this.buffer.writeBytes(val, { length }); },
   },
 };
