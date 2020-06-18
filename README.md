@@ -488,3 +488,6 @@ writer.write('my-type', {
 ```
 npm test
 ```
+
+
+test
