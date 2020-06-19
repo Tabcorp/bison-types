@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "8"
   - "10"
   - "12"
+  - "14"
 env:
   - CXX=g++-4.8
 addons:
@@ -12,3 +12,15 @@ addons:
     packages:
       - g++-4.8
 script: "npm test"
+jobs:
+  include:
+    - stage: npm release
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
+          branch: master
