@@ -27,7 +27,7 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "clever-buffer": "^3.0.0",
+    "clever-buffer": "^4.0.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
