@@ -36,7 +36,7 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-mocha": "^6.2.2",
-    "mocha": "~8.0.1",
+    "mocha": "~8.1.2",
     "require-lint": "^2.0.0",
     "should": "~13.2.3",
     "sinon": "~9.0.1"
